@@ -58,6 +58,12 @@ public class FilmTest {
         filmRepository.save(f);
 
 
+        for (int j=0 ;j<100;j++ ){
+            f.setFid(null);
+            f.setYear((short) (f.getYear()+j));
+            filmRepository.save(f);
+        }
+
     }
 
 

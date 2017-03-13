@@ -20,7 +20,7 @@ public class HelloController {
         map.put("message","消息");
         map.put("fromUserName","world");
         map.put("time",new Date());
-        return "FilmList";
+        return "index";
     }
 
 }

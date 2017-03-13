@@ -4,13 +4,10 @@ import cn.xukangfeng.domain.Film;
 import cn.xukangfeng.domain.FilmRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.data.web.PageableDefault;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -33,8 +30,11 @@ public class FilmController {
         return filmRepository.findAll();
     }
 
-    @GetMapping(value = "/fs")
-    public Page<Film> getFilmByPageable(@PageableDefault(value = 1 ,sort = {"fid"},direction = Sort.Direction.DESC) Pageable pageable){
+//    @PageableDefault(value = 1 ,sort = {"fid"},direction = Sort.Direction.DESC) Pageable pageable
+    @PostMapping(value = "/fs")
+    public Page<Film> getFilmByPageable(@RequestParam(value = "page" ,defaultValue = "1",required = false) Integer page
+                                            , @RequestParam(value = "rows" ,defaultValue = "20",required = false) Integer rows) {
+        Pageable pageable = new PageRequest(page-1, 20, Sort.Direction.DESC , "Year");
         return filmRepository.findAll(pageable);
     }
 
