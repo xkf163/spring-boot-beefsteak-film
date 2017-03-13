@@ -2,6 +2,7 @@ package cn.xukangfeng.web;
 
 import cn.xukangfeng.domain.Film;
 import cn.xukangfeng.domain.FilmRepository;
+import cn.xukangfeng.system.EasyUIPage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -32,9 +33,10 @@ public class FilmController {
 
 //    @PageableDefault(value = 1 ,sort = {"fid"},direction = Sort.Direction.DESC) Pageable pageable
     @PostMapping(value = "/fs")
-    public Page<Film> getFilmByPageable(@RequestParam(value = "page" ,defaultValue = "1",required = false) Integer page
-                                            , @RequestParam(value = "rows" ,defaultValue = "20",required = false) Integer rows) {
-        Pageable pageable = new PageRequest(page-1, 20, Sort.Direction.DESC , "Year");
+    public Page<Film> getFilmByPageable(EasyUIPage easyUIPage, @RequestParam(value = "page" ,defaultValue = "0",required = false) Integer page
+                                            , @RequestParam(value = "size" ,defaultValue = "20",required = false) Integer size) {
+        Sort sort = new Sort(Sort.Direction.DESC,"fid");
+        Pageable pageable = new PageRequest(page,size,sort);
         return filmRepository.findAll(pageable);
     }
 

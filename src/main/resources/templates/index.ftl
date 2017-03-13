@@ -93,9 +93,26 @@
     </div>
 
     <div  data-options="region:'center'">
+        <table id="dg">
+            <thead>
+            <tr>
+                <th field="ck" checkbox="true"></th>
+                <th data-options="field:'name',sortable:true,width:80">片名</th>
+                <th data-options="field:'year',width:20">年代</th>
+                <th data-options="field:'price',width:60,align:'right'">类型</th>
+                <th data-options="field:'price1',width:30">国家/地区</th>
+                <th data-options="field:'price2',width:20">评分</th>
+                <th data-options="field:'price3',width:60">导演</th>
+                <th data-options="field:'price4',width:20">磁盘空间</th>
+                <th data-options="field:'price34'">更新时间</th>
+            </tr>
+            </thead>
+        </table>
+
+        <!--
         <table id="dg" class="easyui-datagrid"
-               data-options="url:'/fs',toolbar:toolbar,pagination:'true',pageSize:20,pageList:[20,50,200],
-               rownumbers:'true',striped:'true',border:false,singleSelect:true,fit:true,fitColumns:true">
+               data-options="toolbar:toolbar,pagination:'true',rownumbers:'true',striped:'true',border:false,singleSelect:false,
+               SelectOnCheck:true,CheckOnSelect:true,fit:true,fitColumns:true">
             <thead>
             <tr>
                 <th field="ck" checkbox="true"></th>
@@ -113,6 +130,7 @@
 
             </tbody>
         </table>
+        -->
         <div id="toolbar"  style="background:#E0ECFF;width:100%;">
             <a href="#" class="easyui-linkbutton" plain="true" iconCls="icon-add">新增</a>
             <a href="#" class="easyui-linkbutton" plain="true" iconCls="icon-edit">编辑</a>
@@ -155,6 +173,69 @@
 
     <div region="south" border="false" style="height: 20px;line-height:20px;background-color: #E0ECFF;padding-left: 20px;">欢迎您</div>
     <script type="text/javascript">
+        $(function () {
+
+            $('#dg').datagrid({
+                toolbar:'#toolbar',
+                url:'/fs',
+//                columns:[[
+//                    {field:'year',title:'年代',width:100},
+//                    {field:'name',title:'Name',width:100},
+//                    {field:'price',title:'Price',width:100,align:'right'}
+//                ]],
+                rownumbers:true,
+                singleSelect:false,
+                selectOnCheck:true,
+                checkOnSelect:true,
+                autoRowHeight:true,
+                fit:true,
+                fitColumns:true,
+                pagination:{
+                    pageSize: 10, //每页显示的记录条数，默认为10
+                    pageList: [10, 15, 20, 25], //可以设置每页记录条数的列表
+                    loading: true,
+                },
+                loadFilter:function(data){
+                    return data.content;
+                }
+            });
+
+
+//            $('#dg').datagrid('getPager').pagination({
+//                pageSize: 10, //每页显示的记录条数，默认为10
+//                pageList: [10, 15, 20, 25], //可以设置每页记录条数的列表
+//                onSelectPage: function(pageNumber, pageSize) {
+//                    SearchTable(pageNumber, pageSize);//每次更换页面时触发更改
+//                }
+//            });
+
+            //默认刷新
+//           SearchTable(1,10);
+        });
+
+
+        function SearchTable(_pageNumber, _pageSize){
+            var dg =$('#dg');
+            var pager =dg.datagrid('getPager');
+
+            //查询条件写在这里,需附带页码信息
+            $.post('/fs', {page:_pageNumber-1,size:_pageSize}, function(data) {
+
+                $('#dg').datagrid('loadData', data.content);
+
+                //注意此处从数据库传来的data数据有记录总行数的total列
+                var _total = data.totalElements;
+                pager.pagination({
+                    //更新pagination的导航列表各参数
+                    total: _total,//总数
+                    pageSize: _pageSize,//行数
+                    pageNumber: _pageNumber//页数
+                });
+
+            });
+        }
+
+
         var toolbar = [{
             text:'新增',
             iconCls:'icon-add',
