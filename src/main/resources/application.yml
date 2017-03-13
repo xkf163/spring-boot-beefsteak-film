@@ -1,0 +1,31 @@
+
+spring:
+  profiles:
+    active: dev
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://127.0.0.1:3306/dbfilm
+    username: root
+    password:
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+  output:
+    ansi:
+      enabled: detect
+debug: true
+
+#  cache:
+#    properties:
+#      hibernate :
+#       generate_statistics: true
+#       cache :
+#        use_second_level_cache: true
+#        use_query_cache: true
+#        region:
+#          factoryClass: org.hibernate.cache.ehcache.EhCacheRegionFactory
+#      javax:
+#        persistence:
+#          sharedCache:
+#            mode: ENABLE_SELECTIVE
