@@ -1,251 +1,275 @@
 package cn.xukangfeng.domain;
 
 
+import org.hibernate.annotations.GenericGenerator;
+
 import javax.persistence.*;
 import java.io.Serializable;
-import java.sql.Date;
+import java.util.Set;
 
 /*
  * 电影类
  */
 @Entity
-@Table(name="f_entity_film_storage")
-public class Film implements Serializable{
+@Table(name = "f_entity_film")
+public class Film implements Serializable {
 
-	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private Integer fid;
-	private String name; //片名
-	private String nameEng; //片名
-	@Column(length = 500)
-	private String nameAll; //所有片名
+    @Id
+//  @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GenericGenerator(name="idGenerator", strategy="uuid") //这个是hibernate的注解/生成32位UUID
+    @GeneratedValue(generator="idGenerator")
+    private String fid;
+    private String name; //片名
+    private String nameEng; //片名
+    @Column(length = 500)
+    private String nameAll; //所有片名
+    private String gatherUrl;
 
-	private String gatherUrl;
-
-	private String directors ; //导演集合
-
-	private String stars; //演员们，String保存片中角色姓名
-
-	private Date releaseDate; //上映日期
-
-	@Column(length = 3 ,precision = 3,scale = 1)
-	private Float rating; //IMDB评分
-
-	private String genre; //影片类型
-
-	private Integer duration; //片长 单位min分钟
-
-	private String certificate; //分级
-	private String country; //国家地区
-	private String language;//语言
-	private String imdb;//imdbno
-	private String douban;//豆瓣
-	private Short year;
-
-	@Column(length = 500)
-	private String memo; //幕后
-
-	@Column(length = 500)
-	private String titbit; //花絮
-
-	@Column(length = 1000)
-	private String storyline; //剧情简介
-
-	@Column(length = 500)
-	private String awards; //获奖记录
-
-	@Column(length = 500)
-	private String goof;
-
-	@Column(length = 500)
-	private String imgPath;
+    @ManyToMany
+    @JoinTable(
+            name = "f_relation_film_director",
+            joinColumns = {@JoinColumn(name = "fid")},
+            inverseJoinColumns = {@JoinColumn(name = "pid")}
+    )
+    private Set<Human> directors; //导演集合
 
 
-	public Film(){
-		
-	}
+    @ManyToMany
+    @JoinTable(
+            name = "f_relation_film_star",
+            joinColumns = {@JoinColumn(name = "fid")},
+            inverseJoinColumns = {@JoinColumn(name = "pid")}
+    )
+    private Set<Human> stars; //演员们，String保存片中角色姓名
 
-	public Integer getFid() {
-		return fid;
-	}
 
-	public void setFid(Integer fid) {
-		this.fid = fid;
-	}
+    @OneToMany(cascade = {CascadeType.ALL})
+    @JoinColumn(name = "fid")
+    private Set<ReleaseDate> releaseDate; //上映日期
 
-	public String getName() {
-		return name;
-	}
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    @Column(length = 3, precision = 3, scale = 1)
+    private Float rating; //IMDB评分
 
-	public String getNameEng() {
-		return nameEng;
-	}
+    private String genre; //影片类型
 
-	public void setNameEng(String nameEng) {
-		this.nameEng = nameEng;
-	}
+    @OneToMany(cascade = {CascadeType.ALL})
+    @JoinColumn(name = "fid")
+    private Set<Duration> duration; //片长 单位min分钟
 
-	public String getNameAll() {
-		return nameAll;
-	}
 
-	public void setNameAll(String nameAll) {
-		this.nameAll = nameAll;
-	}
+    private String certificate; //分级
+    private String country; //国家地区
+    private String language;//语言
+    private String imdb;//imdbno
+    private String douban;//豆瓣
+    private Short year;
 
-	public String getGatherUrl() {
-		return gatherUrl;
-	}
+    @Column(length = 500)
+    private String memo; //幕后
 
-	public void setGatherUrl(String gatherUrl) {
-		this.gatherUrl = gatherUrl;
-	}
+    @Column(length = 500)
+    private String titbit; //花絮
 
-	public String getDirectors() {
-		return directors;
-	}
+    @Column(length = 1000)
+    private String storyline; //剧情简介
 
-	public void setDirectors(String directors) {
-		this.directors = directors;
-	}
+    @Column(length = 500)
+    private String awards; //获奖记录
 
-	public String getStars() {
-		return stars;
-	}
+    @Column(length = 500)
+    private String goof;
 
-	public void setStars(String stars) {
-		this.stars = stars;
-	}
+    @Column(length = 500)
+    private String imgPath;
 
-	public Date getReleaseDate() {
-		return releaseDate;
-	}
 
-	public void setReleaseDate(Date releaseDate) {
-		this.releaseDate = releaseDate;
-	}
+    public Film() {
 
-	public Float getRating() {
-		return rating;
-	}
+    }
 
-	public void setRating(Float rating) {
-		this.rating = rating;
-	}
+    public String getFid() {
+        return fid;
+    }
 
-	public String getGenre() {
-		return genre;
-	}
+    public void setFid(String fid) {
+        this.fid = fid;
+    }
 
-	public void setGenre(String genre) {
-		this.genre = genre;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public Integer getDuration() {
-		return duration;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	public void setDuration(Integer duration) {
-		this.duration = duration;
-	}
+    public String getNameEng() {
+        return nameEng;
+    }
 
-	public String getCertificate() {
-		return certificate;
-	}
+    public void setNameEng(String nameEng) {
+        this.nameEng = nameEng;
+    }
 
-	public void setCertificate(String certificate) {
-		this.certificate = certificate;
-	}
+    public String getNameAll() {
+        return nameAll;
+    }
 
-	public String getCountry() {
-		return country;
-	}
+    public void setNameAll(String nameAll) {
+        this.nameAll = nameAll;
+    }
 
-	public void setCountry(String country) {
-		this.country = country;
-	}
+    public String getGatherUrl() {
+        return gatherUrl;
+    }
 
-	public String getLanguage() {
-		return language;
-	}
+    public void setGatherUrl(String gatherUrl) {
+        this.gatherUrl = gatherUrl;
+    }
 
-	public void setLanguage(String language) {
-		this.language = language;
-	}
+    public Set<Human> getDirectors() {
+        return directors;
+    }
 
-	public String getImdb() {
-		return imdb;
-	}
+    public void setDirectors(Set<Human> directors) {
+        this.directors = directors;
+    }
 
-	public void setImdb(String imdb) {
-		this.imdb = imdb;
-	}
+    public Set<Human> getStars() {
+        return stars;
+    }
 
-	public String getDouban() {
-		return douban;
-	}
+    public void setStars(Set<Human> stars) {
+        this.stars = stars;
+    }
 
-	public void setDouban(String douban) {
-		this.douban = douban;
-	}
+    public Set<ReleaseDate> getReleaseDate() {
+        return releaseDate;
+    }
 
-	public Short getYear() {
-		return year;
-	}
+    public void setReleaseDate(Set<ReleaseDate> releaseDate) {
+        this.releaseDate = releaseDate;
+    }
 
-	public void setYear(Short year) {
-		this.year = year;
-	}
+    public Set<Duration> getDuration() {
+        return duration;
+    }
 
-	public String getMemo() {
-		return memo;
-	}
+    public void setDuration(Set<Duration> duration) {
+        this.duration = duration;
+    }
 
-	public void setMemo(String memo) {
-		this.memo = memo;
-	}
+    public Float getRating() {
+        return rating;
+    }
 
-	public String getTitbit() {
-		return titbit;
-	}
+    public void setRating(Float rating) {
+        this.rating = rating;
+    }
 
-	public void setTitbit(String titbit) {
-		this.titbit = titbit;
-	}
+    public String getGenre() {
+        return genre;
+    }
 
-	public String getStoryline() {
-		return storyline;
-	}
+    public void setGenre(String genre) {
+        this.genre = genre;
+    }
 
-	public void setStoryline(String storyline) {
-		this.storyline = storyline;
-	}
 
-	public String getAwards() {
-		return awards;
-	}
+    public String getCertificate() {
+        return certificate;
+    }
 
-	public void setAwards(String awards) {
-		this.awards = awards;
-	}
+    public void setCertificate(String certificate) {
+        this.certificate = certificate;
+    }
 
-	public String getGoof() {
-		return goof;
-	}
+    public String getCountry() {
+        return country;
+    }
 
-	public void setGoof(String goof) {
-		this.goof = goof;
-	}
+    public void setCountry(String country) {
+        this.country = country;
+    }
 
-	public String getImgPath() {
-		return imgPath;
-	}
+    public String getLanguage() {
+        return language;
+    }
 
-	public void setImgPath(String imgPath) {
-		this.imgPath = imgPath;
-	}
+    public void setLanguage(String language) {
+        this.language = language;
+    }
+
+    public String getImdb() {
+        return imdb;
+    }
+
+    public void setImdb(String imdb) {
+        this.imdb = imdb;
+    }
+
+    public String getDouban() {
+        return douban;
+    }
+
+    public void setDouban(String douban) {
+        this.douban = douban;
+    }
+
+    public Short getYear() {
+        return year;
+    }
+
+    public void setYear(Short year) {
+        this.year = year;
+    }
+
+    public String getMemo() {
+        return memo;
+    }
+
+    public void setMemo(String memo) {
+        this.memo = memo;
+    }
+
+    public String getTitbit() {
+        return titbit;
+    }
+
+    public void setTitbit(String titbit) {
+        this.titbit = titbit;
+    }
+
+    public String getStoryline() {
+        return storyline;
+    }
+
+    public void setStoryline(String storyline) {
+        this.storyline = storyline;
+    }
+
+    public String getAwards() {
+        return awards;
+    }
+
+    public void setAwards(String awards) {
+        this.awards = awards;
+    }
+
+    public String getGoof() {
+        return goof;
+    }
+
+    public void setGoof(String goof) {
+        this.goof = goof;
+    }
+
+    public String getImgPath() {
+        return imgPath;
+    }
+
+    public void setImgPath(String imgPath) {
+        this.imgPath = imgPath;
+    }
 }
