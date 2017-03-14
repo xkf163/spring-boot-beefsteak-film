@@ -33,7 +33,7 @@
     <div title="数据库" region="west" split="true" style="width:200px" >
         <div class="easyui-accordion" style="height: 100%;border: 0px">
             <div title="目录" data-options="iconCls:'icon-ok'" style="padding:10px;">
-                <ul id="tt" class="easyui-tree" data-options="animate:'true',lines:'true',url:'/year',method:'get'">
+                <ul id="tt" class="easyui-tree" data-options="animate:'true',lines:'true',url:'/years',method:'get'">
 
                 </ul>
             </div>
@@ -158,7 +158,8 @@
 
             $('#dg').datagrid({
                 toolbar:toolbar,
-                url:'/fs',
+                url:'/films',
+                method:'get',
 //                columns:[[
 //                    {field:'year',title:'年代',width:100},
 //                    {field:'name',title:'Name',width:100},
@@ -173,8 +174,8 @@
                 fit:true,
                 fitColumns:true,
                 pagination:{
-                    pageSize: 10, //每页显示的记录条数，默认为10
-                    pageList: [10, 15, 20, 25], //可以设置每页记录条数的列表
+                    pageSize: 20, //每页显示的记录条数，默认为10
+                    pageList: [20, 50, 100, 200], //可以设置每页记录条数的列表
                     loading: true,
                 },
                 loadFilter:function(data){
@@ -184,7 +185,7 @@
 
             $('#tt').tree({
                 onClick: function(node){
-                    alert(node.attributes.url);  // alert node text property when clicked
+//                    alert(node.attributes.url);  // alert node text property when clicked
                     $('#dg').datagrid({
                         url:node.attributes.url,
                     });

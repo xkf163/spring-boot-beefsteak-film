@@ -1,6 +1,7 @@
 package cn.xukangfeng.domain;
 
-import org.hibernate.sql.Select;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -12,10 +13,9 @@ import java.util.List;
  */
 public interface FilmRepository extends JpaRepository<Film , Integer> {
 
-    List<Film>  findByYear(Short year);
+    Page<Film> findByYear(Short year, Pageable pageable);
 
-//    @Query(value = "select * from Film f where f.name=name")
-//    Film findFilm(@Param("name") String name);
+    List<Film> findByYear(Short year);
 
     List<Film> findFilmDistinctByYearIsNotNull();
 

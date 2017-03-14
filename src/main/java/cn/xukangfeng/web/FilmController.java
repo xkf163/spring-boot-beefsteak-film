@@ -2,7 +2,6 @@ package cn.xukangfeng.web;
 
 import cn.xukangfeng.domain.Film;
 import cn.xukangfeng.domain.FilmRepository;
-import cn.xukangfeng.system.EasyUIPage;
 import cn.xukangfeng.system.EasyUITree;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -25,22 +24,22 @@ public class FilmController {
     @Autowired
     private FilmRepository filmRepository;
 
-    @GetMapping(value = "/films")
-    public List<Film> getfilmList(){
-        return filmRepository.findAll();
-    }
+//    @GetMapping(value = "/films")
+//    public List<Film> getfilmList(){
+//        return filmRepository.findAll();
+//    }
 
     @PostMapping(value = "/films")
     public List<Film> postfilmList(){
         return filmRepository.findAll();
     }
 
-//    @PageableDefault(value = 1 ,sort = {"fid"},direction = Sort.Direction.DESC) Pageable pageable
-    @PostMapping(value = "/fs")
-    public Page<Film> getFilmByPageable(EasyUIPage easyUIPage, @RequestParam(value = "page" ,defaultValue = "0",required = false) Integer page
-                                            , @RequestParam(value = "size" ,defaultValue = "20",required = false) Integer size) {
-        Sort sort = new Sort(Sort.Direction.DESC,"fid");
-        Pageable pageable = new PageRequest(page,size,sort);
+//  @PageableDefault(value = 1 ,sort = {"fid"},direction = Sort.Direction.DESC) Pageable pageable
+    @GetMapping(value = "/films")
+    public Page<Film> getFilmByPageable(@RequestParam(value = "page" ,defaultValue = "1",required = false) Integer page
+                                            , @RequestParam(value = "rows" ,defaultValue = "20",required = false) Integer rows) {
+        Sort sort = new Sort(Sort.Direction.ASC,"fid");
+        Pageable pageable = new PageRequest(page-1,rows,sort);
         return filmRepository.findAll(pageable);
     }
 
@@ -49,25 +48,28 @@ public class FilmController {
         return filmRepository.findOne(fid);
     }
 
-    @PostMapping(value = "/year1/{year}")
-    public List<Film> getFilmsByYear1(@PathVariable("year") Short year,EasyUIPage easyUIPage, @RequestParam(value = "page" ,defaultValue = "0",required = false) Integer page
-            , @RequestParam(value = "size" ,defaultValue = "20",required = false) Integer size){
-
+    @GetMapping(value = "/y/{year}")
+    public List<Film> findByYear(@PathVariable("year") Short year){
         return filmRepository.findByYear(year);
     }
 
-    @PostMapping(value = "/year/{year}")
-    public Page<Film> getFilmsByYear(@PathVariable("year") Short year){
-        return filmRepository.findByYear(year);
+    @GetMapping(value = "/year/{year}")
+    public Page<Film> findByYear(@PathVariable("year") Short year,
+                                     @RequestParam(value = "page" ,defaultValue = "1" ,required = false) Integer page,
+                                     @RequestParam(value = "rows" ,defaultValue = "20" ,required = false) Integer rows,
+                                 @RequestParam(value = "sort",defaultValue = "fid",required = false) String sort,
+                                 @RequestParam(value = "order",defaultValue = "DESC",required = false) String order){
+        Sort querySort = new Sort(Sort.Direction.DESC,sort);
+        Pageable pageable = new PageRequest(page-1,rows,querySort);
+        return filmRepository.findByYear(year,pageable);
     }
 
+//    @GetMapping(value = "/years")
+//    public List<Film> findFilmDistinctByYear(){
+//        return filmRepository.findFilmDistinctByYearIsNotNull();
+//    }
 
-    @GetMapping(value = "/fy")
-    public List<Film> findFilmDistinctByYear(){
-        return filmRepository.findFilmDistinctByYearIsNotNull();
-    }
-
-    @GetMapping(value = "/year")
+    @GetMapping(value = "/years")
     public List<EasyUITree> findYearDistinct(){
 
         List<Short> list = filmRepository.findYearDistinct();
@@ -96,6 +98,10 @@ public class FilmController {
             i++;
         }
         pTree.setChildren(children);
+        Map<String,Object> map = new HashMap<String,Object>();
+        map.put("url","/films");
+        map.put("target","new");
+        pTree.setAttributes(map);
         parent.add(pTree);
         return parent;
     }
