@@ -1,7 +1,5 @@
 package cn.xukangfeng.domain;
 
-import org.hibernate.annotations.GenericGenerator;
-
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
@@ -14,10 +12,10 @@ import java.util.Set;
 public class Human implements Serializable {
 
     @Id
-    //@GeneratedValue(strategy = GenerationType.IDENTITY)
-    @GenericGenerator(name="idGenerator", strategy="uuid") //这个是hibernate的注解/生成32位UUID
-    @GeneratedValue(generator="idGenerator")
-    private String pid;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+//    @GenericGenerator(name="idGenerator", strategy="uuid") //这个是hibernate的注解/生成32位UUID
+//    @GeneratedValue(generator="idGenerator")
+    private Integer pid;
     private String name; //姓名
     private String nameEng;
     private Date birthDate; //生日
@@ -52,11 +50,11 @@ public class Human implements Serializable {
     public Human() {
     }
 
-    public String getPid() {
+    public Integer getPid() {
         return pid;
     }
 
-    public void setPid(String pid) {
+    public void setPid(Integer pid) {
         this.pid = pid;
     }
 

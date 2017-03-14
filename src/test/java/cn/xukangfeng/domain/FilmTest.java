@@ -40,28 +40,24 @@ public class FilmTest {
 
     @Test
     public void create(){
-        Film f =new Film();
-        f.setName("功夫");
-        f.setYear((short) 2000);
-        f.setCountry("中国");
+        for (int j = 0; j < 200; j++) {
+            Film f = new Film();
+            f.setName("功夫"+j);
+            f.setYear((short) (2000+j));
+            f.setCountry("中国"+j);
 
-        Human h =new Human();
-        h.setName("周星驰");
-        h.setBirthPlace("香港");
+            Human h = new Human();
+            h.setName("周星驰"+j);
+            h.setBirthPlace("香港"+j);
 
-        humanRepository.save(h);
-
-
-        Set<Human> s = new HashSet<>();
-        s.add(h);
-        f.setDirectors(s);
-        filmRepository.save(f);
+            humanRepository.save(h);
 
 
-        for (int j=0 ;j<100;j++ ){
-            f.setFid(null);
-            f.setYear((short) (f.getYear()+j));
+            Set<Human> s = new HashSet<>();
+            s.add(h);
+            f.setDirectors(s);
             filmRepository.save(f);
+
         }
 
     }

@@ -5,42 +5,17 @@
     <title>Custom Collapse Title in Layout - jQuery EasyUI Demo</title>
     <link rel="stylesheet" type="text/css" href="/components/jquery-easyui-1.5.1/themes/default/easyui.css">
     <link rel="stylesheet" type="text/css" href="/components/jquery-easyui-1.5.1/themes/icon.css">
-
     <script type="text/javascript" src="/components/jquery-easyui-1.5.1/jquery.min.js"></script>
     <script type="text/javascript" src="/components/jquery-easyui-1.5.1/jquery.easyui.min.js"></script>
     <script type="text/javascript" src="/components/jquery-easyui-1.5.1/locale/easyui-lang-zh_CN.js"></script>
-
-
-
-    <style type="text/css">
-        #fm{
-            margin:0;
-            padding:10px 30px;
-        }
-        .ftitle{
-            font-size:14px;
-            font-weight:bold;
-            color:#666;
-            padding:5px 0;
-            margin-bottom:10px;
-            border-bottom:1px solid #ccc;
-        }
-        .fitem{
-            margin-bottom:5px;
-        }
-        .fitem label{
-            display:inline-block;
-            width:80px;
-        }
-    </style>
 
 </head>
 <body class="easyui-layout">
     <div data-options="region:'north'" style="height:100px;overflow-y: hidden;background-color: #E0ECFF;font-size: 14px;padding: 10px">
         <a class="easyui-linkbutton" data-options="iconCls:'icon-large-picture',size:'large',plain:'true'"></a>
         jQuery EasyUI framework helps you build your web pages easily.
-        <div id="login" style="position:absolute;right: 5px;top: 5px;">
-            <span style="font-size: 12px;">欢迎您！</span> <a href="#" class="easyui-menubutton" menu="#login1" iconCls="icon-man">Tiago</a>
+        <div id="login" style="position:absolute;right: 25px;top: 15px;">
+            <span style="font-size: 12px;">欢迎</span> <a href="#" class="easyui-menubutton" menu="#login1" iconCls="icon-man">Tiago</a>
         </div>
         <div id="login1" style="width:150px;">
             <div iconCls="icon-undo">Undo</div>
@@ -55,30 +30,11 @@
         </div>
     </div>
     <!--<div data-options="region:'east',split:true,hideCollapsedContent:false" title="East" style="width:150px;"></div>-->
-    <div title="数据库" region="west" split="true" style="width:200px;" >
+    <div title="数据库" region="west" split="true" style="width:200px" >
         <div class="easyui-accordion" style="height: 100%;border: 0px">
             <div title="目录" data-options="iconCls:'icon-ok'" style="padding:10px;">
-                <ul class="easyui-tree" data-options="animate:'true',lines:'true'">
-                    <li>
-                        <span>年代</span>
-                        <ul>
-                            <li><span>File 11</span></li>
-                            <li><span>File 12</span></li>
-                            <li><span>File 13</span></li>
-                            <li><span>File 2</span></li>
-                            <li><span>File 3</span></li>
-                        </ul>
-                    </li>
-                    <li data-options="state:'closed'">
-                        <span>评分</span>
-                        <ul>
-                            <li><span>File 11</span></li>
-                            <li><span>File 12</span></li>
-                            <li><span>File 13</span></li>
-                            <li><span>File 2</span></li>
-                            <li><span>File 3</span></li>
-                        </ul>
-                    </li>
+                <ul id="tt" class="easyui-tree" data-options="animate:'true',lines:'true',url:'/year',method:'get'">
+
                 </ul>
             </div>
             <div title="管理员" data-options="iconCls:'icon-help'" style="padding:10px;">
@@ -130,7 +86,7 @@
 
             </tbody>
         </table>
-        -->
+
         <div id="toolbar"  style="background:#E0ECFF;width:100%;">
             <a href="#" class="easyui-linkbutton" plain="true" iconCls="icon-add">新增</a>
             <a href="#" class="easyui-linkbutton" plain="true" iconCls="icon-edit">编辑</a>
@@ -141,7 +97,7 @@
             <a href="#" class="easyui-linkbutton" plain="true" iconCls="icon-search">查询</a>
             <a href="#" class="easyui-linkbutton" plain="true" iconCls="icon-print">打印</a>
         </div>
-
+-->
         <div id="dlg" class="easyui-dialog" style="width:400px;height:280px;padding:10px 20px"
              closed="true" buttons="#dlg-buttons">
             <div class="ftitle">User Information</div>
@@ -174,9 +130,34 @@
     <div region="south" border="false" style="height: 20px;line-height:20px;background-color: #E0ECFF;padding-left: 20px;">欢迎您</div>
     <script type="text/javascript">
         $(function () {
+            var toolbar = [{
+                text:'新增',
+                iconCls:'icon-add',
+                handler:function(){newUser()}
+            },{
+                text:'编辑',
+                iconCls:'icon-edit',
+                handler:function(){editUser()}
+            },'-',{
+                text:'删除',
+                iconCls:'icon-remove',
+                handler:function(){removeUser()}
+            },{
+                text:'退出',
+                iconCls:'icon-remove',
+                handler:function(){removeUser()}
+            },{
+                text:'刷新',
+                iconCls:'icon-remove',
+                handler:function(){removeUser()}
+            },{
+                text:'导入',
+                iconCls:'icon-remove',
+                handler:function(){removeUser()}
+            }];
 
             $('#dg').datagrid({
-                toolbar:'#toolbar',
+                toolbar:toolbar,
                 url:'/fs',
 //                columns:[[
 //                    {field:'year',title:'年代',width:100},
@@ -188,6 +169,7 @@
                 selectOnCheck:true,
                 checkOnSelect:true,
                 autoRowHeight:true,
+                border:false,
                 fit:true,
                 fitColumns:true,
                 pagination:{
@@ -200,6 +182,15 @@
                 }
             });
 
+            $('#tt').tree({
+                onClick: function(node){
+                    alert(node.attributes.url);  // alert node text property when clicked
+                    $('#dg').datagrid({
+                        url:node.attributes.url,
+                    });
+                    $('#dg').datagrid('reload');
+                }
+            });
 
 //            $('#dg').datagrid('getPager').pagination({
 //                pageSize: 10, //每页显示的记录条数，默认为10
@@ -236,19 +227,7 @@
         }
 
 
-        var toolbar = [{
-            text:'新增',
-            iconCls:'icon-add',
-            handler:function(){newUser()}
-        },{
-            text:'编辑',
-            iconCls:'icon-edit',
-            handler:function(){editUser()}
-        },'-',{
-            text:'删除',
-            iconCls:'icon-remove',
-            handler:function(){removeUser()}
-        }];
+
     </script>
     <script type="text/javascript">
         var url;

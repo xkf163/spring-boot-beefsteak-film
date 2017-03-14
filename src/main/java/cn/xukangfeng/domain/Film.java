@@ -1,8 +1,6 @@
 package cn.xukangfeng.domain;
 
 
-import org.hibernate.annotations.GenericGenerator;
-
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Set;
@@ -14,11 +12,12 @@ import java.util.Set;
 @Table(name = "f_entity_film")
 public class Film implements Serializable {
 
+
+//    @GenericGenerator(name="idGenerator", strategy="uuid") //这个是hibernate的注解/生成32位UUID
+//    @GeneratedValue(generator="idGenerator")
     @Id
-//  @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @GenericGenerator(name="idGenerator", strategy="uuid") //这个是hibernate的注解/生成32位UUID
-    @GeneratedValue(generator="idGenerator")
-    private String fid;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer fid;
     private String name; //片名
     private String nameEng; //片名
     @Column(length = 500)
@@ -88,11 +87,11 @@ public class Film implements Serializable {
 
     }
 
-    public String getFid() {
+    public Integer getFid() {
         return fid;
     }
 
-    public void setFid(String fid) {
+    public void setFid(Integer fid) {
         this.fid = fid;
     }
 
