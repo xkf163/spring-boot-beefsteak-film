@@ -50,14 +50,14 @@
             <thead>
             <tr>
                 <th field="ck" checkbox="true"></th>
-                <th data-options="field:'name',sortable:true,width:80">片名</th>
+                <th data-options="field:'name',sortable:true,width:80,formatter:rowformater">片名</th>
                 <th data-options="field:'year',width:20">年代</th>
                 <th data-options="field:'price',width:60,align:'right'">类型</th>
                 <th data-options="field:'price1',width:30">国家/地区</th>
                 <th data-options="field:'price2',width:20">评分</th>
                 <th data-options="field:'price3',width:60">导演</th>
                 <th data-options="field:'price4',width:20">磁盘空间</th>
-                <th data-options="field:'price34'">更新时间</th>
+                <th data-options="field:'aa',formatter:go">操作</th>
             </tr>
             </thead>
         </table>
@@ -126,6 +126,14 @@
 
     <div region="south" border="false" style="height: 20px;line-height:20px;background-color: #E0ECFF;padding-left: 20px;">欢迎您</div>
     <script type="text/javascript">
+        function rowformater(value,row,index) {
+            return "<a href='"+row.fid+"' target='_blank'>"+value+"</a>";
+        }
+
+        function  go(val,row){
+            return '<a href="#" onclick="constructionManager(\'' + row.fid+ '\')">查看</a>  ';
+        }
+
         $(function () {
             var toolbar = [{
                 text:'新增',
@@ -156,6 +164,9 @@
             $('#dg').datagrid({
                 toolbar:toolbar,
                 url:'/json/films',
+                onDblClickRow: function (rowIndex, rowData){
+                  alert("双击");
+                },
 //                columns:[[
 //                    {field:'year',title:'年代',width:100},
 //                    {field:'name',title:'Name',width:100},
@@ -175,7 +186,17 @@
                     loading: true,
                 },
                 loadFilter:function(data){
-                    return data.content;
+
+//                    if (typeof data.length == 'number' && typeof data.splice == 'function'){    // 判断数据是否是数组
+                        data = {
+                            total: data.totalElements,
+                            rows: data.content,
+                            pageNumber:data.number+1,
+                            pageSize:data.size
+                        }
+//                    }
+//                    alert(data);
+                    return data;
                 }
             });
 

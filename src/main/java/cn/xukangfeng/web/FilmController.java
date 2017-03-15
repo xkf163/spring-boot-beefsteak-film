@@ -75,7 +75,7 @@ public class FilmController {
         }
         pTree.setChildren(children);
         Map<String,Object> map = new HashMap<String,Object>();
-        map.put("url","/films");
+        map.put("url","/json/films");
         map.put("target","new");
         pTree.setAttributes(map);
         parent.add(pTree);
