@@ -32,10 +32,8 @@
     <!--<div data-options="region:'east',split:true,hideCollapsedContent:false" title="East" style="width:150px;"></div>-->
     <div title="数据库" region="west" split="true" style="width:200px" >
         <div class="easyui-accordion" style="height: 100%;border: 0px">
-            <div title="目录" data-options="iconCls:'icon-ok'" style="padding:10px;">
-                <ul id="tt" class="easyui-tree" data-options="animate:'true',lines:'true',url:'/years',method:'get'">
-
-                </ul>
+            <div title="年代树" data-options="iconCls:'icon-ok'" style="padding:10px;">
+                <ul id="tt" class="easyui-tree" data-options="animate:'true',lines:'true',url:'/json/years'"></ul>
             </div>
             <div title="管理员" data-options="iconCls:'icon-help'" style="padding:10px;">
                 <ul class="easyui-tree" data-options="animate:'true',lines:'true'">
@@ -45,7 +43,6 @@
                 </ul>
             </div>
         </div>
-
     </div>
 
     <div  data-options="region:'center'">
@@ -158,8 +155,7 @@
 
             $('#dg').datagrid({
                 toolbar:toolbar,
-                url:'/films',
-                method:'get',
+                url:'/json/films',
 //                columns:[[
 //                    {field:'year',title:'年代',width:100},
 //                    {field:'name',title:'Name',width:100},
