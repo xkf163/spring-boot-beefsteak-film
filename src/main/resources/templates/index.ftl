@@ -8,14 +8,21 @@
     <script type="text/javascript" src="/components/jquery-easyui-1.5.1/jquery.min.js"></script>
     <script type="text/javascript" src="/components/jquery-easyui-1.5.1/jquery.easyui.min.js"></script>
     <script type="text/javascript" src="/components/jquery-easyui-1.5.1/locale/easyui-lang-zh_CN.js"></script>
+    <style>
+        .l-btn-plain:hover{
+            background: #2D3E50 ;
+        }
 
+    </style>
 </head>
 <body class="easyui-layout">
-    <div data-options="region:'north'" style="height:100px;overflow-y: hidden;background-color: #E0ECFF;font-size: 14px;padding: 10px">
-        <a class="easyui-linkbutton" data-options="iconCls:'icon-large-picture',size:'large',plain:'true'"></a>
+    <div data-options="region:'north'" style="color:white;height:100px;border:0px;overflow-y: hidden;background-color: #2D3E50;font-size: 14px;padding: 10px">
+        <a class="easyui-linkbutton" data-options="plain:'true'">
+            <img src="/img/logo2.png">
+        </a>
         jQuery EasyUI framework helps you build your web pages easily.
         <div id="login" style="position:absolute;right: 25px;top: 15px;">
-            <span style="font-size: 12px;">欢迎</span> <a href="#" class="easyui-menubutton" menu="#login1" iconCls="icon-man">Tiago</a>
+            <span style="font-size: 12px;line-height: 30px">欢迎</span> <a href="#" style="color: white;" class="easyui-menubutton" menu="#login1" iconCls="icon-man">Tiago</a>
         </div>
         <div id="login1" style="width:150px;">
             <div iconCls="icon-undo">Undo</div>
@@ -35,12 +42,8 @@
             <div title="年代树" data-options="iconCls:'icon-ok'" style="padding:10px;">
                 <ul id="tt" class="easyui-tree" data-options="animate:'true',lines:'true',url:'/json/years'"></ul>
             </div>
-            <div title="管理员" data-options="iconCls:'icon-help'" style="padding:10px;">
-                <ul class="easyui-tree" data-options="animate:'true',lines:'true'">
-                    <li><span>导航树</span></li>
-                    <li><span>File 3</span></li>
-                    <li><span>File21</span></li>
-                </ul>
+            <div title="导演树" data-options="iconCls:'icon-edit'" style="padding:10px;">
+                <ul id="tt" class="easyui-tree" data-options="animate:'true',lines:'true',url:'/json/directors'"></ul>
             </div>
         </div>
     </div>
@@ -124,7 +127,7 @@
     </div>
 
 
-    <div region="south" border="false" style="height: 20px;line-height:20px;background-color: #E0ECFF;padding-left: 20px;">欢迎您</div>
+    <div region="south" border="false" style="background-color: #2D3E50;height: 20px;line-height:20px;color: white;padding-left: 20px;">欢迎您</div>
     <script type="text/javascript">
         function rowformater(value,row,index) {
             return "<a href='"+row.fid+"' style='text-decoration: none;color: darkolivegreen' target='_blank'>"+value+"</a>";

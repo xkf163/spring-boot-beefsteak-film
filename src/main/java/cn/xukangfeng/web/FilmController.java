@@ -49,6 +49,45 @@ public class FilmController {
 
 
     /**
+     *
+     */
+    @PostMapping(value = "/json/directors")
+    public List<EasyUITree> findDirectorDistinct(){
+        List<String> list = filmRepository.findDirectorDistinct();
+        EasyUITree pTree = new EasyUITree();
+        List<EasyUITree> children =new ArrayList<EasyUITree>();
+        List<EasyUITree> parent =new ArrayList<EasyUITree>();
+        pTree.setId(1);
+        pTree.setText("导演");
+        pTree.setState("close");
+        int i=10;
+        for(String name : list){
+            EasyUITree cTree = new EasyUITree();
+            cTree.setId(i);
+            if("".equals(name)){
+                cTree.setText("NULL");
+
+            }else{
+                cTree.setText(name);
+            }
+
+            Map<String,Object> map = new HashMap<String,Object>();
+            map.put("url","/json/human/"+name);
+            map.put("target","new");
+            cTree.setAttributes(map);
+            children.add(cTree);
+            i++;
+        }
+        pTree.setChildren(children);
+        Map<String,Object> map = new HashMap<String,Object>();
+        map.put("url","/json/human");
+        map.put("target","new");
+        pTree.setAttributes(map);
+        parent.add(pTree);
+        return parent;
+    }
+
+    /**
      * 获取字段Year的所有值,去除重复值，导航树展示数据
      * @return
      */
