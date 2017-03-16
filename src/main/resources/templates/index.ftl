@@ -52,9 +52,9 @@
                 <th field="ck" checkbox="true"></th>
                 <th data-options="field:'name',sortable:true,width:80,formatter:rowformater">片名</th>
                 <th data-options="field:'year',width:20">年代</th>
-                <th data-options="field:'price',width:60,align:'right'">类型</th>
-                <th data-options="field:'price1',width:30">国家/地区</th>
-                <th data-options="field:'price2',width:20">评分</th>
+                <th data-options="field:'genre',width:60,align:'right'">类型</th>
+                <th data-options="field:'country',width:30">国家/地区</th>
+                <th data-options="field:'rating',width:20">评分</th>
                 <th data-options="field:'price3',width:60">导演</th>
                 <th data-options="field:'price4',width:20">磁盘空间</th>
                 <th data-options="field:'aa',formatter:go">操作</th>
@@ -127,7 +127,7 @@
     <div region="south" border="false" style="height: 20px;line-height:20px;background-color: #E0ECFF;padding-left: 20px;">欢迎您</div>
     <script type="text/javascript">
         function rowformater(value,row,index) {
-            return "<a href='"+row.fid+"' target='_blank'>"+value+"</a>";
+            return "<a href='"+row.fid+"' style='text-decoration: none;color: darkolivegreen' target='_blank'>"+value+"</a>";
         }
 
         function  go(val,row){
@@ -175,16 +175,15 @@
                 rownumbers:true,
                 singleSelect:false,
                 selectOnCheck:true,
-                checkOnSelect:true,
+                   checkOnSelect:true,
                 autoRowHeight:true,
                 border:false,
                 fit:true,
                 fitColumns:true,
-                pagination:{
-                    pageSize: 20, //每页显示的记录条数，默认为10
-                    pageList: [20, 50, 100, 200], //可以设置每页记录条数的列表
-                    loading: true,
-                },
+                pagination:true,
+                pageSize: 20, //每页显示的记录条数，默认为10
+                pageList: [20, 50, 100, 200], //可以设置每页记录条数的列表
+                loading: true,
                 loadFilter:function(data){
 
 //                    if (typeof data.length == 'number' && typeof data.splice == 'function'){    // 判断数据是否是数组

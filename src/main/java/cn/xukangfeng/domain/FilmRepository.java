@@ -19,7 +19,7 @@ public interface FilmRepository extends JpaRepository<Film , Integer> {
 
     List<Film> findFilmDistinctByYearIsNotNull();
 
-    @Query(value = "Select DISTINCT(f.year)  From Film f")
+    @Query(value = "Select DISTINCT(f.year)  From Film f ORDER BY f.year desc ")
     List<Short> findYearDistinct();
 
 }

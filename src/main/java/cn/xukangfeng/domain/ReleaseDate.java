@@ -1,5 +1,7 @@
 package cn.xukangfeng.domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import javax.persistence.*;
 
 /**
@@ -17,6 +19,7 @@ public class ReleaseDate {
     @Column(length = 500)
     private String description;
 
+    @JsonBackReference
     @ManyToOne(cascade = {CascadeType.ALL})
     @JoinColumn(name = "fid")
     private Film film;

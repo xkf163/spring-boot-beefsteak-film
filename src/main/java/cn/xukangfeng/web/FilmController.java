@@ -65,7 +65,13 @@ public class FilmController {
         for(Short year : list){
             EasyUITree cTree = new EasyUITree();
             cTree.setId(i);
-            cTree.setText(Short.toString(year));
+            if(year == null){
+                cTree.setText("1900");
+
+            }else{
+                cTree.setText(Short.toString(year));
+            }
+
             Map<String,Object> map = new HashMap<String,Object>();
             map.put("url","/json/year/"+year);
             map.put("target","new");

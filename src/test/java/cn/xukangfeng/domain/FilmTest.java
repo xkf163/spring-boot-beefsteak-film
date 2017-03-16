@@ -42,13 +42,14 @@ public class FilmTest {
     public void create(){
         for (int j = 0; j < 200; j++) {
             Film f = new Film();
-            f.setName("功夫"+j);
-            f.setYear((short) (2000+j));
-            f.setCountry("中国"+j);
+            f.setName("西游记"+j);
+            f.setYear((short) (1990+j));
+            f.setCountry("中国大陆"+j);
+            f.setGenre("科幻");
 
             Human h = new Human();
-            h.setName("周星驰"+j);
-            h.setBirthPlace("香港"+j);
+            h.setName("六小龄童"+j);
+            h.setBirthPlace("中国"+j);
 
             humanRepository.save(h);
 

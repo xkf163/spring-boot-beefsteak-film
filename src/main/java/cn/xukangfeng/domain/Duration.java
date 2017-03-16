@@ -1,5 +1,7 @@
 package cn.xukangfeng.domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import javax.persistence.*;
 
 /**
@@ -14,12 +16,16 @@ public class Duration {
     private Integer did;
 
     private String version;
+
     private String runningTime;
+
     private String area;
 
     @Column(length = 500)
     private String description;
 
+
+    @JsonBackReference
     @ManyToOne(cascade = {CascadeType.ALL})
     @JoinColumn(name = "fid")
     private Film film;
@@ -80,6 +86,7 @@ public class Duration {
     public Film getFilm() {
         return film;
     }
+
 
     public void setFilm(Film film) {
         this.film = film;
