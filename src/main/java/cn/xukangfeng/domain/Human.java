@@ -25,13 +25,13 @@ public class Human implements Serializable {
     private String gender;
     private Double height;
 
-    @ManyToMany
-    @OrderBy("year")
-    private Set<Film> filmsAsDirector; //导演作品列表
-
-    @ManyToMany
-    @OrderBy("year")
-    private Set<Film> filmsAsActor; //表演作品列表
+//    @ManyToMany
+//    @OrderBy("year")
+//    private Set<Film> filmsAsDirector; //导演作品列表
+//
+//    @ManyToMany
+//    @OrderBy("year")
+//    private Set<Film> filmsAsActor; //表演作品列表
 
 
     public Human(String name, String nameEng, Date birthDate, String birthPlace, String jobs, String biography, String gender, Double height, Set<Film> filmsAsDirector, Set<Film> filmsAsActor) {
@@ -43,8 +43,8 @@ public class Human implements Serializable {
         this.biography = biography;
         this.gender = gender;
         this.height = height;
-        this.filmsAsDirector = filmsAsDirector;
-        this.filmsAsActor = filmsAsActor;
+//        this.filmsAsDirector = filmsAsDirector;
+//        this.filmsAsActor = filmsAsActor;
     }
 
     public Human() {
@@ -121,22 +121,22 @@ public class Human implements Serializable {
     public void setHeight(Double height) {
         this.height = height;
     }
-
-    public Set<Film> getFilmsAsDirector() {
-        return filmsAsDirector;
-    }
-
-    public void setFilmsAsDirector(Set<Film> filmsAsDirector) {
-        this.filmsAsDirector = filmsAsDirector;
-    }
-
-    public Set<Film> getFilmsAsActor() {
-        return filmsAsActor;
-    }
-
-    public void setFilmsAsActor(Set<Film> filmsAsActor) {
-        this.filmsAsActor = filmsAsActor;
-    }
+//
+//    public Set<Film> getFilmsAsDirector() {
+//        return filmsAsDirector;
+//    }
+//
+//    public void setFilmsAsDirector(Set<Film> filmsAsDirector) {
+//        this.filmsAsDirector = filmsAsDirector;
+//    }
+//
+//    public Set<Film> getFilmsAsActor() {
+//        return filmsAsActor;
+//    }
+//
+//    public void setFilmsAsActor(Set<Film> filmsAsActor) {
+//        this.filmsAsActor = filmsAsActor;
+//    }
 
     @Override
     public boolean equals(Object o) {
