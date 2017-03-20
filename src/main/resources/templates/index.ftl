@@ -8,15 +8,9 @@
     <script type="text/javascript" src="/components/jquery-easyui-1.5.1/jquery.min.js"></script>
     <script type="text/javascript" src="/components/jquery-easyui-1.5.1/jquery.easyui.min.js"></script>
     <script type="text/javascript" src="/components/jquery-easyui-1.5.1/locale/easyui-lang-zh_CN.js"></script>
-    <style>
-        .l-btn-plain:hover{
-            background: #2D3E50 ;
-        }
-
-    </style>
 </head>
 <body class="easyui-layout">
-    <div data-options="region:'north'" style="color:white;height:100px;border:0px;overflow-y: hidden;background-color: #2D3E50;font-size: 14px;padding: 10px">
+    <div data-options="region:'north'" style="color:white;height:80px;border:0px;overflow-y: hidden;background-color: #2D3E50;font-size: 14px;padding: 10px">
         <a class="easyui-linkbutton" data-options="plain:'true'">
             <img src="/img/logo2.png">
         </a>
@@ -39,31 +33,37 @@
     <!--<div data-options="region:'east',split:true,hideCollapsedContent:false" title="East" style="width:150px;"></div>-->
     <div title="数据库" region="west" split="true" style="width:200px" >
         <div class="easyui-accordion" style="height: 100%;border: 0px">
-            <div title="年代树" data-options="iconCls:'icon-ok'" style="padding:10px;">
+            <div title="年代树" data-options="iconCls:'icon-ok',collapsed:false,collapsible:true" style="padding:10px;">
                 <ul id="tt" class="easyui-tree" data-options="animate:'true',lines:'true',url:'/json/years'"></ul>
             </div>
-            <div title="导演树" data-options="iconCls:'icon-edit'" style="padding:10px;">
+            <div title="导演树" data-options="iconCls:'icon-edit',collapsed:false,collapsible:true" style="padding:10px;">
                 <ul id="tt" class="easyui-tree" data-options="animate:'true',lines:'true',url:'/json/directors'"></ul>
             </div>
         </div>
     </div>
 
-    <div  data-options="region:'center'">
-        <table id="dg">
-            <thead>
-            <tr>
-                <th field="ck" checkbox="true"></th>
-                <th data-options="field:'name',sortable:true,width:80,formatter:rowformater">片名</th>
-                <th data-options="field:'year',width:20">年代</th>
-                <th data-options="field:'genre',width:60,align:'right'">类型</th>
-                <th data-options="field:'country',width:30">国家/地区</th>
-                <th data-options="field:'rating',width:20">评分</th>
-                <th data-options="field:'price3',width:60">导演</th>
-                <th data-options="field:'price4',width:20">磁盘空间</th>
-                <th data-options="field:'aa',formatter:go">操作</th>
-            </tr>
-            </thead>
-        </table>
+    <div  data-options="region:'center',border:true" >
+
+        <div id="center-tabs" class="easyui-tabs" data-options="fit:true,border:false">
+            <div title="DataGrid">
+                <table id="dg">
+                    <thead>
+                    <tr>
+                        <th field="ck" checkbox="true"></th>
+                        <th data-options="field:'name',sortable:true,width:80,formatter:rowformater">片名</th>
+                        <th data-options="field:'year',width:20">年代</th>
+                        <th data-options="field:'genre',width:60,align:'right'">类型</th>
+                        <th data-options="field:'country',width:30">国家/地区</th>
+                        <th data-options="field:'rating',width:20">评分</th>
+                        <th data-options="field:'price3',width:60">导演</th>
+                        <th data-options="field:'price4',width:20">磁盘空间</th>
+                        <th data-options="field:'aa',formatter:go">操作</th>
+                    </tr>
+                    </thead>
+                </table>
+            </div>
+            </div>
+
 
         <!--
         <table id="dg" class="easyui-datagrid"
@@ -86,8 +86,8 @@
 
             </tbody>
         </table>
-
-        <div id="toolbar"  style="background:#E0ECFF;width:100%;">
+-->
+        <div id="toolbar">
             <a href="#" class="easyui-linkbutton" plain="true" iconCls="icon-add">新增</a>
             <a href="#" class="easyui-linkbutton" plain="true" iconCls="icon-edit">编辑</a>
             <a href="#" class="easyui-linkbutton" plain="true" iconCls="icon-remove">移除</a>
@@ -97,7 +97,7 @@
             <a href="#" class="easyui-linkbutton" plain="true" iconCls="icon-search">查询</a>
             <a href="#" class="easyui-linkbutton" plain="true" iconCls="icon-print">打印</a>
         </div>
--->
+
         <div id="dlg" class="easyui-dialog" style="width:400px;height:280px;padding:10px 20px"
              closed="true" buttons="#dlg-buttons">
             <div class="ftitle">User Information</div>
@@ -165,10 +165,22 @@
             }];
 
             $('#dg').datagrid({
-                toolbar:toolbar,
+                toolbar:'#toolbar',
                 url:'/json/films',
                 onDblClickRow: function (rowIndex, rowData){
-                  alert("双击");
+                  $("#center-tabs").tabs('add',{
+                      title:'New Tab',
+//                      content:'/film/'+rowData.fid,
+//                      href:'/film/'+rowData.fid,
+                      href:'/h/'+rowData.fid,
+                      closable:true,
+                      tools:[{
+                          iconCls:'icon-refresh',
+                          handler:function(){
+                              alert('refresh');
+                          }
+                      }]
+                  })
                 },
 //                columns:[[
 //                    {field:'year',title:'年代',width:100},

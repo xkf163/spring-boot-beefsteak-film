@@ -1,6 +1,7 @@
 package cn.xukangfeng.web;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.Date;
@@ -21,6 +22,17 @@ public class HelloController {
         map.put("fromUserName","world");
         map.put("time",new Date());
         return "index";
+    }
+
+    @RequestMapping(value = "/h/{fid}")
+    public String h(Map<String,Object> map, @PathVariable("fid") String fid){
+
+        map.put("toUserName","张丰");
+        map.put("message","消息");
+        map.put("fromUserName","world");
+        map.put("time",new Date());
+        map.put("fid",fid);
+        return "film";
     }
 
 }

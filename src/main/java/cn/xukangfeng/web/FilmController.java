@@ -150,7 +150,10 @@ public class FilmController {
 //        return filmRepository.findAll();
 //    }
 
-
+    @PostMapping(value = "/film/save/{id}")
+    public Film saveFilm(Film film ,@PathVariable("id") Integer fid){
+        return filmRepository.save(film);
+    }
 
     @GetMapping(value = "/film/{id}")
     public Film getFilm(@PathVariable("id") Integer fid){
