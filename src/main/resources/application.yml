@@ -14,6 +14,14 @@ spring:
   output:
     ansi:
       enabled: detect
+  redis:
+    host: localhost
+    port: 6379
+    pool:
+      max-active: 8
+      min-idle: 0
+      max-idle: 8
+      max-wait: -1
 debug: true
 
 #  cache:
