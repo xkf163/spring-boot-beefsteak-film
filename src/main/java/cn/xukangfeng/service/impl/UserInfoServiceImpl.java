@@ -20,7 +20,6 @@ public class UserInfoServiceImpl implements UserInfoService {
     @Transactional(readOnly=true)
     @Override
     public UserInfo findByUsername(String username) {
-        System.out.println("UserInfoServiceImpl.findByUsername()");
         return userInfoRepository.findByUsername(username);
     }
 }

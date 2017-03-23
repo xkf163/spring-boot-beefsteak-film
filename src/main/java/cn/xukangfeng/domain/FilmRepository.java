@@ -4,7 +4,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-
 import java.util.List;
 
 
@@ -19,10 +18,11 @@ public interface FilmRepository extends JpaRepository<Film , Integer> {
 
     List<Film> findFilmDistinctByYearIsNotNull();
 
+
     @Query(value = "Select DISTINCT(f.year)  From Film f ORDER BY f.year desc ")
     List<Short> findYearDistinct();
 
-    @Query(value = "Select h.name   From f_entity_human h where jobs = '导演' ORDER BY h.name desc ")
+    @Query(value = "Select h.name  From f_entity_human h where h.jobs = '导演' ORDER BY h.name desc ")
     List<String> findDirectorDistinct();
 
 }

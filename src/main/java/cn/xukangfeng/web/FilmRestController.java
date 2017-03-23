@@ -19,7 +19,7 @@ import java.util.Map;
  * Created by F on 2017/3/12.
  */
 @RestController
-public class FilmController {
+public class FilmRestController {
 
     @Autowired
     private FilmRepository filmRepository;
@@ -36,7 +36,7 @@ public class FilmController {
      * @param order
      * @return
      */
-    @PostMapping(value = "/json/year/{year}")
+    @PostMapping(value = "/json/films/year/{year}")
     public Page<Film> findByYearGet(@PathVariable("year") Short year,
                                     @RequestParam(value = "page" ,defaultValue = "1" ,required = false) Integer page,
                                     @RequestParam(value = "rows" ,defaultValue = "20" ,required = false) Integer rows,
@@ -51,7 +51,7 @@ public class FilmController {
     /**
      *
      */
-    @PostMapping(value = "/json/directors")
+    @PostMapping(value = "/json/film/directors")
     public List<EasyUITree> findDirectorDistinct(){
         List<String> list = filmRepository.findDirectorDistinct();
         EasyUITree pTree = new EasyUITree();
@@ -91,7 +91,7 @@ public class FilmController {
      * 获取字段Year的所有值,去除重复值，导航树展示数据
      * @return
      */
-    @PostMapping(value = "/json/years")
+    @PostMapping(value = "/json/film/years")
     public List<EasyUITree> findYearDistinct(){
         List<Short> list = filmRepository.findYearDistinct();
         EasyUITree pTree = new EasyUITree();
@@ -138,40 +138,21 @@ public class FilmController {
     }
 
 
-
-
-//    @GetMapping(value = "/films")
-//    public List<Film> getfilmList(){
-//        return filmRepository.findAll();
-//    }
-
-//    @PostMapping(value = "/films")
-//    public List<Film> postfilmList(){
-//        return filmRepository.findAll();
-//    }
-
-    @PostMapping(value = "/film/save/{id}")
+    @PostMapping(value = "/json/film/save/{id}")
     public Film saveFilm(Film film ,@PathVariable("id") Integer fid){
         return filmRepository.save(film);
     }
 
-    @GetMapping(value = "/film/{id}")
+    @GetMapping(value = "/json/film/{id}")
     public Film getFilm(@PathVariable("id") Integer fid){
         return filmRepository.findOne(fid);
     }
 
-    @GetMapping(value = "/y/{year}")
+    @GetMapping(value = "/json/y/{year}")
     public List<Film> findByYear(@PathVariable("year") Short year){
         return filmRepository.findByYear(year);
     }
 
-
-
-
-//    @GetMapping(value = "/years")
-//    public List<Film> findFilmDistinctByYear(){
-//        return filmRepository.findFilmDistinctByYearIsNotNull();
-//    }
 
 
 

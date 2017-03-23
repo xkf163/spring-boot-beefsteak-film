@@ -24,7 +24,7 @@ public class Film implements Serializable {
     private String nameAll; //所有片名
     private String gatherUrl;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "f_relation_film_director",
             joinColumns = {@JoinColumn(name = "fid")},
@@ -33,7 +33,7 @@ public class Film implements Serializable {
     private Set<Human> directors; //导演集合
 
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "f_relation_film_star",
             joinColumns = {@JoinColumn(name = "fid")},
@@ -46,15 +46,16 @@ public class Film implements Serializable {
     @JoinColumn(name = "fid")
     private Set<ReleaseDate> releaseDate; //上映日期
 
+    @OneToMany(cascade = {CascadeType.ALL})
+    @JoinColumn(name = "fid")
+    private Set<Duration> duration; //片长 单位min分钟
 
     @Column(length = 3, precision = 3, scale = 1)
     private Float rating; //IMDB评分
 
     private String genre; //影片类型
 
-    @OneToMany(cascade = {CascadeType.ALL})
-    @JoinColumn(name = "fid")
-    private Set<Duration> duration; //片长 单位min分钟
+
 
 
     private String certificate; //分级

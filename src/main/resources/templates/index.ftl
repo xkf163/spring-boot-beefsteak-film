@@ -16,7 +16,7 @@
         </a>
         jQuery EasyUI framework helps you build your web pages easily.
         <div id="login" style="position:absolute;right: 25px;top: 15px;">
-            <span style="font-size: 12px;line-height: 30px">欢迎</span> <a href="#" style="color: white;" class="easyui-menubutton" menu="#login1" iconCls="icon-man">Tiago</a>
+            <span style="font-size: 12px;line-height: 30px">欢迎您</span> <a href="#" style="color: white;" class="easyui-menubutton" menu="#login1" iconCls="icon-man">Tiago</a>
         </div>
         <div id="login1" style="width:150px;">
             <div iconCls="icon-undo">Undo</div>
@@ -34,69 +34,30 @@
     <div title="数据库" region="west" split="true" style="width:200px" >
         <div class="easyui-accordion" style="height: 100%;border: 0px">
             <div title="年代树" data-options="iconCls:'icon-ok',collapsed:false,collapsible:true" style="padding:10px;">
-                <ul id="tt" class="easyui-tree" data-options="animate:'true',lines:'true',url:'/json/years'"></ul>
+                <ul id="tt" class="easyui-tree" data-options="animate:'true',lines:'true',url:'/json/film/years'"></ul>
             </div>
             <div title="导演树" data-options="iconCls:'icon-edit',collapsed:false,collapsible:true" style="padding:10px;">
-                <ul id="tt" class="easyui-tree" data-options="animate:'true',lines:'true',url:'/json/directors'"></ul>
+                <ul id="tt" class="easyui-tree" data-options="animate:'true',lines:'true',url:'/json/film/directors'"></ul>
             </div>
         </div>
     </div>
 
     <div  data-options="region:'center',border:true" >
-
-        <div id="center-tabs" class="easyui-tabs" data-options="fit:true,border:false">
-            <div title="DataGrid">
-                <table id="dg">
-                    <thead>
-                    <tr>
-                        <th field="ck" checkbox="true"></th>
-                        <th data-options="field:'name',sortable:true,width:80,formatter:rowformater">片名</th>
-                        <th data-options="field:'year',width:20">年代</th>
-                        <th data-options="field:'genre',width:60,align:'right'">类型</th>
-                        <th data-options="field:'country',width:30">国家/地区</th>
-                        <th data-options="field:'rating',width:20">评分</th>
-                        <th data-options="field:'price3',width:60">导演</th>
-                        <th data-options="field:'price4',width:20">磁盘空间</th>
-                        <th data-options="field:'aa',formatter:go">操作</th>
-                    </tr>
-                    </thead>
-                </table>
-            </div>
-            </div>
-
-
-        <!--
-        <table id="dg" class="easyui-datagrid"
-               data-options="toolbar:toolbar,pagination:'true',rownumbers:'true',striped:'true',border:false,singleSelect:false,
-               SelectOnCheck:true,CheckOnSelect:true,fit:true,fitColumns:true">
+        <table id="dg" class="easyui-datagrid">
             <thead>
             <tr>
                 <th field="ck" checkbox="true"></th>
-                <th data-options="field:'name',sortable:true,width:80">片名</th>
+                <th data-options="field:'name',sortable:true,width:80,formatter:rowformater">片名</th>
                 <th data-options="field:'year',width:20">年代</th>
-                <th data-options="field:'price',width:60,align:'right'">类型</th>
-                <th data-options="field:'price1',width:30">国家/地区</th>
-                <th data-options="field:'price2',width:20">评分</th>
+                <th data-options="field:'genre',width:60,align:'right'">类型</th>
+                <th data-options="field:'country',width:30">国家/地区</th>
+                <th data-options="field:'rating',width:20">评分</th>
                 <th data-options="field:'price3',width:60">导演</th>
                 <th data-options="field:'price4',width:20">磁盘空间</th>
-                <th data-options="field:'price34'">更新时间</th>
+                <th data-options="field:'aa',formatter:go">操作</th>
             </tr>
             </thead>
-            <tbody>
-
-            </tbody>
         </table>
--->
-        <div id="toolbar">
-            <a href="#" class="easyui-linkbutton" plain="true" iconCls="icon-add">新增</a>
-            <a href="#" class="easyui-linkbutton" plain="true" iconCls="icon-edit">编辑</a>
-            <a href="#" class="easyui-linkbutton" plain="true" iconCls="icon-remove">移除</a>
-            <a href="#" class="easyui-linkbutton" plain="true" iconCls="icon-save">保存</a>
-            <a href="#" class="easyui-linkbutton" plain="true" iconCls="icon-cancel">删除</a>
-            <a href="#" class="easyui-linkbutton" plain="true" iconCls="icon-reload">刷新</a>
-            <a href="#" class="easyui-linkbutton" plain="true" iconCls="icon-search">查询</a>
-            <a href="#" class="easyui-linkbutton" plain="true" iconCls="icon-print">打印</a>
-        </div>
 
         <div id="dlg" class="easyui-dialog" style="width:400px;height:280px;padding:10px 20px"
              closed="true" buttons="#dlg-buttons">
@@ -124,15 +85,19 @@
             <a href="#" class="easyui-linkbutton" iconCls="icon-ok" onclick="saveUser()">Save</a>
             <a href="#" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlg').dialog('close')">Cancel</a>
         </div>
+
     </div>
-
-
     <div region="south" border="false" style="background-color: #2D3E50;height: 20px;line-height:20px;color: white;padding-left: 20px;">欢迎您</div>
+
+
+
     <script type="text/javascript">
+        //datagrid行自定义展示
         function rowformater(value,row,index) {
-            return "<a href='"+row.fid+"' style='text-decoration: none;color: darkolivegreen' target='_blank'>"+value+"</a>";
+            return "<a href='/film/"+row.fid+"' style='text-decoration: none;color: darkolivegreen' target='_blank'>"+value+"</a>";
         }
 
+        //datagrid行操作列
         function  go(val,row){
             return '<a href="#" onclick="constructionManager(\'' + row.fid+ '\')">查看</a>  ';
         }
@@ -152,45 +117,35 @@
                 handler:function(){removeUser()}
             },{
                 text:'退出',
-                iconCls:'icon-remove',
+                iconCls:'icon-reload',
                 handler:function(){removeUser()}
             },{
                 text:'刷新',
-                iconCls:'icon-remove',
+                iconCls:'icon-save',
                 handler:function(){removeUser()}
             },{
                 text:'导入',
-                iconCls:'icon-remove',
+                iconCls:'icon-cancel',
                 handler:function(){removeUser()}
             }];
 
+
             $('#dg').datagrid({
-                toolbar:'#toolbar',
+                toolbar:toolbar,
                 url:'/json/films',
                 onDblClickRow: function (rowIndex, rowData){
-                  $("#center-tabs").tabs('add',{
-                      title:'New Tab',
-//                      content:'/film/'+rowData.fid,
-//                      href:'/film/'+rowData.fid,
-                      href:'/h/'+rowData.fid,
-                      closable:true,
-                      tools:[{
-                          iconCls:'icon-refresh',
-                          handler:function(){
-                              alert('refresh');
-                          }
-                      }]
-                  })
+
                 },
 //                columns:[[
-//                    {field:'year',title:'年代',width:100},
-//                    {field:'name',title:'Name',width:100},
+//                    {field:'ck',checkbox:'true'},
+//                    {field:'name',title:'片名',width:80,sortable:'true',formatter:rowformater},
+//                    {field:'year',title:'年代',width:20},
 //                    {field:'price',title:'Price',width:100,align:'right'}
 //                ]],
                 rownumbers:true,
                 singleSelect:false,
                 selectOnCheck:true,
-                   checkOnSelect:true,
+                checkOnSelect:true,
                 autoRowHeight:true,
                 border:false,
                 fit:true,
@@ -214,6 +169,7 @@
                 }
             });
 
+            //导航树
             $('#tt').tree({
                 onClick: function(node){
 //                    alert(node.attributes.url);  // alert node text property when clicked

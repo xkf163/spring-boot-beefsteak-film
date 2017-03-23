@@ -1,14 +1,19 @@
 package cn.xukangfeng.web;
 
+import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.IncorrectCredentialsException;
 import org.apache.shiro.authc.UnknownAccountException;
+import org.apache.shiro.authc.UsernamePasswordToken;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
@@ -75,6 +80,23 @@ public class HelloController {
         map.put("msg", msg);
         // 此方法不处理登录成功,由shiro进行处理.
         return "/login";
+    }
+
+
+    @RequestMapping(value="ajaxLogin",method=RequestMethod.POST)
+    @ResponseBody
+    public Map<String,Object> submitLogin(String username, String password,Boolean rememberMe,Model model) {
+        Map<String, Object> resultMap = new LinkedHashMap<String, Object>();
+        try {
+            UsernamePasswordToken token = new UsernamePasswordToken(username, password,rememberMe);
+            SecurityUtils.getSubject().login(token);
+            resultMap.put("status", 200);
+            resultMap.put("message", "登录成功");
+        } catch (Exception e) {
+            resultMap.put("status", 500);
+            resultMap.put("message", e.getMessage());
+        }
+        return resultMap;
     }
 
 

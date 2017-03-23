@@ -1,12 +1,11 @@
 package cn.xukangfeng.service;
 
-import cn.xukangfeng.domain.SysPermission;
+import cn.xukangfeng.domain.SysUrlPermission;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.web.filter.mgt.DefaultFilterChainManager;
 import org.apache.shiro.web.filter.mgt.PathMatchingFilterChainResolver;
 import org.apache.shiro.web.servlet.AbstractShiroFilter;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -15,14 +14,13 @@ import java.util.Map;
 /**
  * Created by F on 2017/3/22.
  */
-@Service
 public class ShiroService {
 
     @Autowired
     ShiroFilterFactoryBean shiroFilterFactoryBean;
 
     @Autowired
-    SysPermissionService SysPermissionService;
+    SysUrlPermissionService sysUrlPermissionService;
 
     /**
      * 初始化权限
@@ -30,9 +28,9 @@ public class ShiroService {
     public Map<String, String> loadFilterChainDefinitions() {
         // 权限控制map.从数据库获取
         Map<String, String> filterChainDefinitionMap = new LinkedHashMap<String, String>();
-        List<SysPermission> list = SysPermissionService.selectAll();
+        List<SysUrlPermission> list = sysUrlPermissionService.findAllByOrderBySortAsc();
 
-        for (SysPermission SysPermission : list) {
+        for (SysUrlPermission SysPermission : list) {
             filterChainDefinitionMap.put(SysPermission.getUrl(),
                     SysPermission.getPermission());
         }
