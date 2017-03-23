@@ -1,5 +1,6 @@
 package cn.xukangfeng.service;
 
+import cn.xukangfeng.domain.SysPermission;
 import cn.xukangfeng.domain.SysUrlPermission;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.web.filter.mgt.DefaultFilterChainManager;
@@ -30,9 +31,9 @@ public class ShiroService {
         Map<String, String> filterChainDefinitionMap = new LinkedHashMap<String, String>();
         List<SysUrlPermission> list = sysUrlPermissionService.findAllByOrderBySortAsc();
 
-        for (SysUrlPermission SysPermission : list) {
-            filterChainDefinitionMap.put(SysPermission.getUrl(),
-                    SysPermission.getPermission());
+        for (SysUrlPermission sysUrlPermission : list) {
+            filterChainDefinitionMap.put(sysUrlPermission.getUrl(),
+                    sysUrlPermission.getPermission());
         }
         return filterChainDefinitionMap;
     }
@@ -46,8 +47,7 @@ public class ShiroService {
 
             AbstractShiroFilter shiroFilter = null;
             try {
-                shiroFilter = (AbstractShiroFilter) shiroFilterFactoryBean
-                        .getObject();
+                shiroFilter = (AbstractShiroFilter) shiroFilterFactoryBean.getObject();
             } catch (Exception e) {
                 throw new RuntimeException(
                         "get ShiroFilter from shiroFilterFactoryBean error!");
@@ -62,15 +62,12 @@ public class ShiroService {
             manager.getFilterChains().clear();
 
             shiroFilterFactoryBean.getFilterChainDefinitionMap().clear();
-            shiroFilterFactoryBean
-                    .setFilterChainDefinitionMap(loadFilterChainDefinitions());
+            shiroFilterFactoryBean.setFilterChainDefinitionMap(loadFilterChainDefinitions());
             // 重新构建生成
-            Map<String, String> chains = shiroFilterFactoryBean
-                    .getFilterChainDefinitionMap();
+            Map<String, String> chains = shiroFilterFactoryBean.getFilterChainDefinitionMap();
             for (Map.Entry<String, String> entry : chains.entrySet()) {
                 String url = entry.getKey();
-                String chainDefinition = entry.getValue().trim()
-                        .replace(" ", "");
+                String chainDefinition = entry.getValue().trim().replace(" ", "");
                 manager.createChain(url, chainDefinition);
             }
 

@@ -39,6 +39,8 @@
             <div title="导演树" data-options="iconCls:'icon-edit',collapsed:false,collapsible:true" style="padding:10px;">
                 <ul id="tt" class="easyui-tree" data-options="animate:'true',lines:'true',url:'/json/film/directors'"></ul>
             </div>
+            <div title="权限配置" data-options="iconCls:'icon-edit',collapsed:false,collapsible:true" style="padding:10px;">
+            </div>
         </div>
     </div>
 

@@ -15,6 +15,8 @@ import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.util.ByteSource;
 
 import javax.annotation.Resource;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
 /**
  * Created by F on 2017/3/22.
@@ -82,7 +84,7 @@ public class ShiroRealm extends AuthorizingRealm {
         // 通过username从数据库中查找 User对象，如果找到，没找到.
         // 实际项目中，这里可以根据实际情况做缓存，如果不做，Shiro自己也是有时间间隔机制，2分钟内不会重复执行该方法
         UserInfo userInfo = userInfoService.findByUsername(username);
-        System.out.println("----->>userInfo=" + userInfo);
+        System.out.println("--"+new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Calendar.getInstance().getTime())+"-->>userInfo=" + userInfo);
         if (userInfo == null) {
             return null;
         }
