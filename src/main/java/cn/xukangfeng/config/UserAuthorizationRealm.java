@@ -4,10 +4,7 @@ import cn.xukangfeng.domain.SysPermission;
 import cn.xukangfeng.domain.SysRole;
 import cn.xukangfeng.domain.UserInfo;
 import cn.xukangfeng.service.UserInfoService;
-import org.apache.shiro.authc.AuthenticationException;
-import org.apache.shiro.authc.AuthenticationInfo;
-import org.apache.shiro.authc.AuthenticationToken;
-import org.apache.shiro.authc.SimpleAuthenticationInfo;
+import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
@@ -21,7 +18,7 @@ import java.util.Calendar;
 /**
  * Created by F on 2017/3/22.
  */
-public class ShiroRealm extends AuthorizingRealm {
+public class UserAuthorizationRealm extends AuthorizingRealm {
 
     @Resource
     private UserInfoService userInfoService;
@@ -77,16 +74,16 @@ public class ShiroRealm extends AuthorizingRealm {
      * 认证信息(身份验证) Authentication 是用来验证用户身份
      */
     @Override
-    protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws AuthenticationException {
+    protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken authcToken) throws AuthenticationException {
         // 获取用户的输入帐号
-        String username = (String) token.getPrincipal();
-        System.out.println(token.getCredentials());
+        UsernamePasswordToken token = (UsernamePasswordToken) authcToken;
         // 通过username从数据库中查找 User对象，如果找到，没找到.
         // 实际项目中，这里可以根据实际情况做缓存，如果不做，Shiro自己也是有时间间隔机制，2分钟内不会重复执行该方法
-        UserInfo userInfo = userInfoService.findByUsername(username);
+        UserInfo userInfo = userInfoService.findByUsername(token.getUsername());
+
         System.out.println("--"+new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Calendar.getInstance().getTime())+"-->>userInfo=" + userInfo);
         if (userInfo == null) {
-            return null;
+            throw new UnknownAccountException();//用户不存在
         }
 
         /*

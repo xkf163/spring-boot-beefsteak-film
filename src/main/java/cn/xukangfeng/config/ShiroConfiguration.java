@@ -65,6 +65,7 @@ public class ShiroConfiguration {
 
 
     /**
+     * 密码比较器
      * HashedCredentialsMatcher，这个类是为了对密码进行编码的，
      * 防止密码在数据库里明码保存，当然在登陆认证的生活，
      * 这个类也负责对form里输入的密码进行编码。
@@ -82,8 +83,8 @@ public class ShiroConfiguration {
      */
     @Bean
 //    @DependsOn("lifecycleBeanPostProcessor")
-    public ShiroRealm shiroRealm(){
-        ShiroRealm shiroRealm = new ShiroRealm();
+    public UserAuthorizationRealm shiroRealm(){
+        UserAuthorizationRealm shiroRealm = new UserAuthorizationRealm();
         shiroRealm.setCredentialsMatcher(hashedCredentialsMatcher());
         return shiroRealm;
     }
