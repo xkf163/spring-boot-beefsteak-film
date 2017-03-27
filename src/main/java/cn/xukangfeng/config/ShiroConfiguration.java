@@ -73,17 +73,21 @@ public class ShiroConfiguration {
      */
     @Bean
     public HashedCredentialsMatcher hashedCredentialsMatcher(){
+        System.out.println("ShiroConfiguration.hashedCredentialsMatcher : 实例化");
         HashedCredentialsMatcher hashedCredentialsMatcher = new HashedCredentialsMatcher();
-        hashedCredentialsMatcher.setHashAlgorithmName("md5");
+        hashedCredentialsMatcher.setHashAlgorithmName("md5");//加密算法
         hashedCredentialsMatcher.setHashIterations(2);//散列的次数，比如散列两次，相当于 md5(md5(""));
         return hashedCredentialsMatcher;
     }
+
+
     /**
      * 这是个自定义的认证类，继承自AuthorizingRealm，负责用户的认证和权限的处理，可以参考JdbcRealm的实现。
      */
     @Bean
 //    @DependsOn("lifecycleBeanPostProcessor")
     public UserAuthorizationRealm shiroRealm(){
+        System.out.println("ShiroConfiguration.userAuthorizationRealm : 实例化");
         UserAuthorizationRealm shiroRealm = new UserAuthorizationRealm();
         shiroRealm.setCredentialsMatcher(hashedCredentialsMatcher());
         return shiroRealm;
@@ -135,11 +139,13 @@ public class ShiroConfiguration {
 
     /**
      * 权限管理，这个类组合了登陆，登出，权限，session的处理，是个比较重要的类。
+     * shiro核心安全管理类
      * @return
      */
     @Bean
     public SecurityManager securityManager() {
         DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();
+        System.out.println("ShiroConfiguration.securityManager : 实例化");
         // 设置realm.
         securityManager.setRealm(shiroRealm());
         // 自定义缓存实现 使用redis
@@ -193,8 +199,6 @@ public class ShiroConfiguration {
         shiroFilterFactoryBean.setSuccessUrl("/index");
         // 未授权界面;
         shiroFilterFactoryBean.setUnauthorizedUrl("/403");
-
-
         // 拦截器
         Map<String,String> filterChainDefinitionMap = new LinkedHashMap<String,String>();
 /*
@@ -218,7 +222,7 @@ public class ShiroConfiguration {
             filterChainDefinitionMap.put(sysUrlPermission.getUrl(), sysUrlPermission.getPermission());
         }
         shiroFilterFactoryBean.setFilterChainDefinitionMap(filterChainDefinitionMap);
-        System.out.println("Shiro拦截器工厂类注入成功");
+        System.out.println("ShiroConfiguration.shiroFilterFactoryBean : shiro实例化");
         return shiroFilterFactoryBean;
 
     }
@@ -249,6 +253,7 @@ public class ShiroConfiguration {
      */
     @Bean
     public AuthorizationAttributeSourceAdvisor authorizationAttributeSourceAdvisor(SecurityManager securityManager){
+        System.out.println("ShiroConfiguration.authorizaionAttributeSourceAdvisor : 实例化");
         AuthorizationAttributeSourceAdvisor authorizationAttributeSourceAdvisor = new AuthorizationAttributeSourceAdvisor();
         authorizationAttributeSourceAdvisor.setSecurityManager(securityManager);
         return authorizationAttributeSourceAdvisor;

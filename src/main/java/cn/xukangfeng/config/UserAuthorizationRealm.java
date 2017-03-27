@@ -16,6 +16,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 /**
+ * 身份校验核心类
  * Created by F on 2017/3/22.
  */
 public class UserAuthorizationRealm extends AuthorizingRealm {

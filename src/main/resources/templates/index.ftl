@@ -40,6 +40,24 @@
                 <ul id="tt" class="easyui-tree" data-options="animate:'true',lines:'true',url:'/json/film/directors'"></ul>
             </div>
             <div title="权限配置" data-options="iconCls:'icon-edit',collapsed:false,collapsible:true" style="padding:10px;">
+                <ul id="tt" class="easyui-tree">
+                    <li>
+                        <span>Folder</span>
+                        <ul>
+                            <li>
+                                <span>Sub Folder 1</span>
+                                <ul>
+                                    <li><span><a href="#">File 11</a></span></li>
+                                    <li><span>File 12</span></li>
+                                    <li><span>File 13</span></li>
+                                </ul>
+                            </li>
+                            <li><span>File 2</span></li>
+                            <li><span>File 3</span></li>
+                        </ul>
+                    </li>
+                    <li><span>File21</span></li>
+                </ul>
             </div>
         </div>
     </div>
