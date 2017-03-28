@@ -14,10 +14,11 @@ import org.apache.shiro.web.session.mgt.DefaultWebSessionManager;
 import org.crazycake.shiro.RedisCacheManager;
 import org.crazycake.shiro.RedisManager;
 import org.crazycake.shiro.RedisSessionDAO;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -52,6 +53,9 @@ public class ShiroConfiguration {
     private int port;
 
 
+    protected final Logger logger = LoggerFactory.getLogger(this.getClass());
+
+
     /**
      * LifecycleBeanPostProcessor，这是个DestructionAwareBeanPostProcessor的子类，
      * 负责org.apache.shiro.util.Initializable类型bean的生命周期的，初始化和销毁。
@@ -73,7 +77,7 @@ public class ShiroConfiguration {
      */
     @Bean
     public HashedCredentialsMatcher hashedCredentialsMatcher(){
-        System.out.println("ShiroConfiguration.hashedCredentialsMatcher : 实例化");
+        logger.info("ShiroConfiguration.hashedCredentialsMatcher : 实例化");
         HashedCredentialsMatcher hashedCredentialsMatcher = new HashedCredentialsMatcher();
         hashedCredentialsMatcher.setHashAlgorithmName("md5");//加密算法
         hashedCredentialsMatcher.setHashIterations(2);//散列的次数，比如散列两次，相当于 md5(md5(""));
@@ -85,9 +89,8 @@ public class ShiroConfiguration {
      * 这是个自定义的认证类，继承自AuthorizingRealm，负责用户的认证和权限的处理，可以参考JdbcRealm的实现。
      */
     @Bean
-//    @DependsOn("lifecycleBeanPostProcessor")
     public UserAuthorizationRealm shiroRealm(){
-        System.out.println("ShiroConfiguration.userAuthorizationRealm : 实例化");
+        logger.info("ShiroConfiguration.userAuthorizationRealm : 实例化");
         UserAuthorizationRealm shiroRealm = new UserAuthorizationRealm();
         shiroRealm.setCredentialsMatcher(hashedCredentialsMatcher());
         return shiroRealm;
@@ -145,7 +148,7 @@ public class ShiroConfiguration {
     @Bean
     public SecurityManager securityManager() {
         DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();
-        System.out.println("ShiroConfiguration.securityManager : 实例化");
+        logger.info("ShiroConfiguration.securityManager : 实例化");
         // 设置realm.
         securityManager.setRealm(shiroRealm());
         // 自定义缓存实现 使用redis
@@ -222,7 +225,7 @@ public class ShiroConfiguration {
             filterChainDefinitionMap.put(sysUrlPermission.getUrl(), sysUrlPermission.getPermission());
         }
         shiroFilterFactoryBean.setFilterChainDefinitionMap(filterChainDefinitionMap);
-        System.out.println("ShiroConfiguration.shiroFilterFactoryBean : shiro实例化");
+        logger.info("ShiroConfiguration.shiroFilterFactoryBean : shiro实例化");
         return shiroFilterFactoryBean;
 
     }
@@ -233,7 +236,7 @@ public class ShiroConfiguration {
      * @return
      */
     @Bean
-    @ConditionalOnMissingBean
+//    @DependsOn({"lifecycleBeanPostProcessor"})
     public DefaultAdvisorAutoProxyCreator defaultAdvisorAutoProxyCreator() {
         DefaultAdvisorAutoProxyCreator daap = new DefaultAdvisorAutoProxyCreator();
         daap.setProxyTargetClass(true);
@@ -253,7 +256,7 @@ public class ShiroConfiguration {
      */
     @Bean
     public AuthorizationAttributeSourceAdvisor authorizationAttributeSourceAdvisor(SecurityManager securityManager){
-        System.out.println("ShiroConfiguration.authorizaionAttributeSourceAdvisor : 实例化");
+        logger.info("ShiroConfiguration.authorizaionAttributeSourceAdvisor : 实例化");
         AuthorizationAttributeSourceAdvisor authorizationAttributeSourceAdvisor = new AuthorizationAttributeSourceAdvisor();
         authorizationAttributeSourceAdvisor.setSecurityManager(securityManager);
         return authorizationAttributeSourceAdvisor;
