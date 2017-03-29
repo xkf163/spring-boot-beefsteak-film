@@ -64,7 +64,7 @@ public class ShiroConfiguration {
      */
     @Bean
     public HashedCredentialsMatcher hashedCredentialsMatcher(){
-        logger.info("ShiroConfiguration.hashedCredentialsMatcher : 实例化");
+        logger.info("实例化 ：ShiroConfiguration.hashedCredentialsMatcher");
         HashedCredentialsMatcher hashedCredentialsMatcher = new HashedCredentialsMatcher();
         hashedCredentialsMatcher.setHashAlgorithmName("md5");//加密算法
         hashedCredentialsMatcher.setHashIterations(2);//散列的次数，比如散列两次，相当于 md5(md5(""));
@@ -78,7 +78,7 @@ public class ShiroConfiguration {
     @Bean
 //    @DependsOn({"lifecycleBeanPostProcessor"})
     public UserAuthorizationRealm shiroRealm(){
-        logger.info("ShiroConfiguration.userAuthorizationRealm : 实例化");
+        logger.info("实例化 ：ShiroConfiguration.userAuthorizationRealm");
         UserAuthorizationRealm shiroRealm = new UserAuthorizationRealm();
         shiroRealm.setCredentialsMatcher(hashedCredentialsMatcher());
         return shiroRealm;
@@ -168,7 +168,7 @@ public class ShiroConfiguration {
     @Bean
     public SecurityManager securityManager() {
         DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();
-        logger.info("ShiroConfiguration.securityManager : 实例化");
+        logger.info("实例化 ：ShiroConfiguration.securityManager");
         // 设置realm.
         securityManager.setRealm(shiroRealm());
         // 自定义缓存实现 使用redis
@@ -226,7 +226,7 @@ public class ShiroConfiguration {
             filterChainDefinitionMap.put(sysUrlPermission.getUrl(), sysUrlPermission.getPermission());
         }
         shiroFilterFactoryBean.setFilterChainDefinitionMap(filterChainDefinitionMap);
-        logger.info("ShiroConfiguration.shiroFilterFactoryBean : shiro实例化");
+        logger.info("实例化 ：ShiroConfiguration.shiroFilterFactoryBean");
         return shiroFilterFactoryBean;
 
     }
@@ -257,7 +257,7 @@ public class ShiroConfiguration {
      */
     @Bean
     public AuthorizationAttributeSourceAdvisor authorizationAttributeSourceAdvisor(SecurityManager securityManager){
-        logger.info("ShiroConfiguration.authorizaionAttributeSourceAdvisor : 实例化");
+        logger.info("实例化 ：ShiroConfiguration.authorizaionAttributeSourceAdvisor");
         AuthorizationAttributeSourceAdvisor authorizationAttributeSourceAdvisor = new AuthorizationAttributeSourceAdvisor();
         authorizationAttributeSourceAdvisor.setSecurityManager(securityManager);
         return authorizationAttributeSourceAdvisor;

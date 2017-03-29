@@ -36,26 +36,15 @@
             <div title="年代树" data-options="iconCls:'icon-ok',collapsed:false,collapsible:true" style="padding:10px;">
                 <ul id="tt" class="easyui-tree" data-options="animate:'true',lines:'true',url:'/json/film/years'"></ul>
             </div>
-            <div title="导演树" data-options="iconCls:'icon-edit',collapsed:false,collapsible:true" style="padding:10px;">
+            <div title="导演树" data-options="iconCls:'icon-edit'" style="padding:10px;">
                 <ul id="tt" class="easyui-tree" data-options="animate:'true',lines:'true',url:'/json/film/directors'"></ul>
             </div>
-            <div title="权限配置" data-options="iconCls:'icon-edit',collapsed:false,collapsible:true" style="padding:10px;">
+            <div title="权限配置" data-options="iconCls:'icon-edit'" style="padding:10px;">
                 <ul id="tt" class="easyui-tree">
-                    <li>
-                        <span>Folder</span>
-                        <ul>
-                            <li>
-                                <span>Sub Folder 1</span>
-                                <ul>
-                                    <li><span><a href="#">File 11</a></span></li>
-                                    <li><span>File 12</span></li>
-                                    <li><span>File 13</span></li>
-                                </ul>
-                            </li>
-                            <li><span>File 2</span></li>
-                            <li><span>File 3</span></li>
-                        </ul>
-                    </li>
+                    <li><span>File21</span></li>
+                    <li><span>File21</span></li>
+                    <li><span>File21</span></li>
+                    <li><span>File21</span></li>
                     <li><span>File21</span></li>
                 </ul>
             </div>
@@ -107,7 +96,7 @@
         </div>
 
     </div>
-    <div region="south" border="false" style="background-color: #2D3E50;height: 20px;line-height:20px;color: white;padding-left: 20px;">欢迎您</div>
+    <div region="south" border="false" style="background-color: #2D3E50;height: 20px;line-height:20px;color: white;text-align: center">欢迎您jQuery EasyUI framework helps you build your web pages easily.</div>
 
 
 

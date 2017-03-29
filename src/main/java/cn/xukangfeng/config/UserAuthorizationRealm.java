@@ -10,10 +10,10 @@ import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.util.ByteSource;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.annotation.Resource;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
 
 /**
  * 身份校验核心类
@@ -24,6 +24,7 @@ public class UserAuthorizationRealm extends AuthorizingRealm {
     @Resource
     private UserInfoService userInfoService;
 
+    protected final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     /**
      * 此方法调用  hasRole,hasPermission的时候才会进行回调.
@@ -48,7 +49,7 @@ public class UserAuthorizationRealm extends AuthorizingRealm {
         * 当放到缓存中时，这样的话，doGetAuthorizationInfo就只会执行一次了，
         * 缓存过期之后会再次执行。
         */
-        System.out.println("权限配置-->MyShiroRealm.doGetAuthorizationInfo()");
+        logger.info("权限配置: UserAuthorizationRealm.doGetAuthorizationInfo()");
         SimpleAuthorizationInfo simpleAuthorizationInfo = new SimpleAuthorizationInfo();
         UserInfo userInfo = (UserInfo) principalCollection.getPrimaryPrincipal();
 
@@ -82,7 +83,7 @@ public class UserAuthorizationRealm extends AuthorizingRealm {
         // 实际项目中，这里可以根据实际情况做缓存，如果不做，Shiro自己也是有时间间隔机制，2分钟内不会重复执行该方法
         UserInfo userInfo = userInfoService.findByUsername(token.getUsername());
 
-        System.out.println("--"+new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Calendar.getInstance().getTime())+"-->>userInfo=" + userInfo);
+        logger.info("验证身份：UserAuthorizationRealm doGetAuthenticationInfo()"+"->userInfo=" + userInfo);
         if (userInfo == null) {
             throw new UnknownAccountException();//用户不存在
         }

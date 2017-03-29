@@ -36,7 +36,7 @@ public class FilmRestController {
      * @param order
      * @return
      */
-    @PostMapping(value = "/json/films/year/{year}")
+    @PostMapping(value = "/json/year/{year}")
     public Page<Film> findByYearGet(@PathVariable("year") Short year,
                                     @RequestParam(value = "page" ,defaultValue = "1" ,required = false) Integer page,
                                     @RequestParam(value = "rows" ,defaultValue = "20" ,required = false) Integer rows,
