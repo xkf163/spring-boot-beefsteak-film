@@ -5,22 +5,19 @@ import cn.xukangfeng.service.SysUrlPermissionService;
 import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
 import org.apache.shiro.codec.Base64;
 import org.apache.shiro.mgt.SecurityManager;
+import org.apache.shiro.spring.LifecycleBeanPostProcessor;
 import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.web.mgt.CookieRememberMeManager;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
 import org.apache.shiro.web.servlet.SimpleCookie;
-import org.apache.shiro.web.session.mgt.DefaultWebSessionManager;
-import org.crazycake.shiro.RedisCacheManager;
-import org.crazycake.shiro.RedisManager;
-import org.crazycake.shiro.RedisSessionDAO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.DependsOn;
 
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -46,26 +43,16 @@ public class ShiroConfiguration {
     @Autowired
     SysUrlPermissionService sysUrlPermissionService;
 
-    @Value("${spring.redis.host}")
-    private String host;
-
-    @Value("${spring.redis.port}")
-    private int port;
+//    @Value("${spring.redis.host}")
+//    private String host;
+//
+//    @Value("${spring.redis.port}")
+//    private int port;
 
 
     protected final Logger logger = LoggerFactory.getLogger(this.getClass());
 
 
-    /**
-     * LifecycleBeanPostProcessor，这是个DestructionAwareBeanPostProcessor的子类，
-     * 负责org.apache.shiro.util.Initializable类型bean的生命周期的，初始化和销毁。
-     * 主要是AuthorizingRealm类的子类，以及EhCacheManager类。
-     * @return
-     */
-//    @Bean(name = "lifecycleBeanPostProcessor")
-//    public LifecycleBeanPostProcessor lifecycleBeanPostProcessor() {
-//        return new LifecycleBeanPostProcessor();
-//    }
 
 
     /**
@@ -89,6 +76,7 @@ public class ShiroConfiguration {
      * 这是个自定义的认证类，继承自AuthorizingRealm，负责用户的认证和权限的处理，可以参考JdbcRealm的实现。
      */
     @Bean
+//    @DependsOn({"lifecycleBeanPostProcessor"})
     public UserAuthorizationRealm shiroRealm(){
         logger.info("ShiroConfiguration.userAuthorizationRealm : 实例化");
         UserAuthorizationRealm shiroRealm = new UserAuthorizationRealm();
@@ -96,48 +84,80 @@ public class ShiroConfiguration {
         return shiroRealm;
     }
 
+
     /**
      * 配置shiro redisManager
      *
      * @return
      */
-    public RedisManager redisManager() {
-        RedisManager redisManager = new RedisManager();
-        redisManager.setHost(host);
-        redisManager.setPort(port);
-        redisManager.setExpire(1800);// 配置过期时间
-        // redisManager.setTimeout(timeout);
-        // redisManager.setPassword(password);
-        return redisManager;
-    }
-    /**
-     * cacheManager 缓存 redis实现
-     *
-     * @return
-     */
-    public RedisCacheManager cacheManager() {
-        RedisCacheManager redisCacheManager = new RedisCacheManager();
-        redisCacheManager.setRedisManager(redisManager());
-        return redisCacheManager;
-    }
-
-    /**
-     * RedisSessionDAO shiro sessionDao层的实现 通过redis
-     */
-    public RedisSessionDAO redisSessionDAO() {
-        RedisSessionDAO redisSessionDAO = new RedisSessionDAO();
-        redisSessionDAO.setRedisManager(redisManager());
-        return redisSessionDAO;
-    }
+//    public RedisManager redisManager() {
+//        RedisManager redisManager = new RedisManager();
+//        redisManager.setHost(host);
+//        redisManager.setPort(port);
+//        redisManager.setExpire(1800);// 配置过期时间
+//        // redisManager.setTimeout(timeout);
+//        // redisManager.setPassword(password);
+//        return redisManager;
+//    }
+//    /**
+//     * cacheManager 缓存 redis实现
+//     *
+//     * @return
+//     */
+//    public RedisCacheManager cacheManager() {
+//        RedisCacheManager redisCacheManager = new RedisCacheManager();
+//        redisCacheManager.setRedisManager(redisManager());
+//        return redisCacheManager;
+//    }
+//
+//    /**
+//     * RedisSessionDAO shiro sessionDao层的实现 通过redis
+//     */
+//    public RedisSessionDAO redisSessionDAO() {
+//        RedisSessionDAO redisSessionDAO = new RedisSessionDAO();
+//        redisSessionDAO.setRedisManager(redisManager());
+//        return redisSessionDAO;
+//    }
 
     /**
      * shiro session的管理
      */
-    public DefaultWebSessionManager SessionManager() {
-        DefaultWebSessionManager sessionManager = new DefaultWebSessionManager();
-        sessionManager.setSessionDAO(redisSessionDAO());
-        return sessionManager;
+//    @Bean(name="sessionManager")
+//    public DefaultWebSessionManager sessionManager() {
+//        DefaultWebSessionManager sessionManager = new DefaultWebSessionManager();
+//        sessionManager.setSessionDAO(redisSessionDAO());
+//        return sessionManager;
+//    }
+
+
+
+
+
+    /**
+     * cookie对象;
+     * @return
+     */
+    @Bean
+    public SimpleCookie rememberMeCookie(){
+        //这个参数是cookie的名称，对应前端的checkbox的name = rememberMe
+        SimpleCookie simpleCookie = new SimpleCookie("rememberMe");
+        //<!-- 记住我cookie生效时间30天 ,单位秒;-->
+        simpleCookie.setMaxAge(2592000);
+        return simpleCookie;
     }
+    /**
+     * cookie管理对象;记住我功能
+     * @return
+     */
+    @Bean
+    public CookieRememberMeManager rememberMeManager(){
+        CookieRememberMeManager cookieRememberMeManager = new CookieRememberMeManager();
+        cookieRememberMeManager.setCookie(rememberMeCookie());
+        //rememberMe cookie加密的密钥 建议每个项目都不一样 默认AES算法 密钥长度(128 256 512 位)
+        cookieRememberMeManager.setCipherKey(Base64.decode("3AvVhmFLUs0KTA3Kprsdag=="));
+        return cookieRememberMeManager;
+    }
+
 
 
     /**
@@ -152,37 +172,13 @@ public class ShiroConfiguration {
         // 设置realm.
         securityManager.setRealm(shiroRealm());
         // 自定义缓存实现 使用redis
-        securityManager.setCacheManager(cacheManager());
+//        securityManager.setCacheManager(cacheManager());
         // 自定义session管理 使用redis
-        securityManager.setSessionManager(SessionManager());
+//        securityManager.setSessionManager(SessionManager());
         //注入记住我管理器;
         securityManager.setRememberMeManager(rememberMeManager());
 
         return securityManager;
-    }
-
-
-    /**
-     * cookie对象;
-     * @return
-     */
-    public SimpleCookie rememberMeCookie(){
-        //这个参数是cookie的名称，对应前端的checkbox的name = rememberMe
-        SimpleCookie simpleCookie = new SimpleCookie("rememberMe");
-        //<!-- 记住我cookie生效时间30天 ,单位秒;-->
-        simpleCookie.setMaxAge(2592000);
-        return simpleCookie;
-    }
-    /**
-     * cookie管理对象;记住我功能
-     * @return
-     */
-    public CookieRememberMeManager rememberMeManager(){
-        CookieRememberMeManager cookieRememberMeManager = new CookieRememberMeManager();
-        cookieRememberMeManager.setCookie(rememberMeCookie());
-        //rememberMe cookie加密的密钥 建议每个项目都不一样 默认AES算法 密钥长度(128 256 512 位)
-        cookieRememberMeManager.setCipherKey(Base64.decode("3AvVhmFLUs0KTA3Kprsdag=="));
-        return cookieRememberMeManager;
     }
 
 
@@ -219,6 +215,11 @@ public class ShiroConfiguration {
         // <!-- authc:所有url都必须认证通过才可以访问; anon:所有url都都可以匿名访问-->
         filterChainDefinitionMap.put("/**", "authc");
  */
+        //配置记住我或认证通过可以访问的地址
+
+        filterChainDefinitionMap.put("/index", "user");
+        filterChainDefinitionMap.put("/", "user");
+
         //从数据库获取权限清单,替代上面隐掉代码
         List<SysUrlPermission> list = sysUrlPermissionService.findAllByOrderBySortAsc();
         for (SysUrlPermission sysUrlPermission : list) {
@@ -236,7 +237,7 @@ public class ShiroConfiguration {
      * @return
      */
     @Bean
-//    @DependsOn({"lifecycleBeanPostProcessor"})
+    @DependsOn({"lifecycleBeanPostProcessor"})
     public DefaultAdvisorAutoProxyCreator defaultAdvisorAutoProxyCreator() {
         DefaultAdvisorAutoProxyCreator daap = new DefaultAdvisorAutoProxyCreator();
         daap.setProxyTargetClass(true);
@@ -260,6 +261,19 @@ public class ShiroConfiguration {
         AuthorizationAttributeSourceAdvisor authorizationAttributeSourceAdvisor = new AuthorizationAttributeSourceAdvisor();
         authorizationAttributeSourceAdvisor.setSecurityManager(securityManager);
         return authorizationAttributeSourceAdvisor;
+    }
+
+
+
+    /**
+     * LifecycleBeanPostProcessor，这是个DestructionAwareBeanPostProcessor的子类，
+     * 负责org.apache.shiro.util.Initializable类型bean的生命周期的，初始化和销毁。
+     * 主要是AuthorizingRealm类的子类，以及EhCacheManager类。
+     * @return
+     */
+    @Bean(name = "lifecycleBeanPostProcessor")
+    public static LifecycleBeanPostProcessor lifecycleBeanPostProcessor() {
+        return new LifecycleBeanPostProcessor();
     }
 
 }
